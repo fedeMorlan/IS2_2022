@@ -1,0 +1,29 @@
+para ejecutar: ir a la carpeta vacunAssist en el CLI, y ejecutar 
+    python manage.py runserver
+luego ir a un navegador e ingresar a 127.0.0.1:8000
+    > nota: a mi en google chrome me agrega "/login" al final y eso da error.
+    si les pasa lo mismo, ingresar desde modo incognito de chrome o desde otro navegador
+
+Sobre el login y registro:
+    ver abajo como ingresar a la pantalla de login (por ahora)
+    el login de django ya viene con contrasenas seguras (alfanumerico mayuscula y minuscula CREO)
+    >> digo porque esto no figura en la HU
+    >> de momento no es muy customizable por eso quedo en ingles, pero a medida que entendamos lo vamos a poder hacer en 2 patadas
+
+Sobre el codigo:
+    aquellos archivos que modifique (siempre segun indican los tutoriales) marque las lineas que toque con "# new" para que se note que viene por defecto y que no.
+
+RECURSOS UTILIZADOS
+
+Para crear el proyecto y hacer el deploy (todavia esta pendiente el deploy por ahora funciona solo en localhost):
+(los primeros 3 o 4 capitulos)
+https://djangoforbeginners.com/hello-world/
+
+Para crear el login,registro y resetear password:
+https://learndjango.com/tutorials/django-login-and-logout-tutorial
+https://learndjango.com/tutorials/django-signup-tutorial
+el tutorial de arriba no menciona como customizar el registro para que incluya email, usa un signup default de django
+https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
+https://learndjango.com/tutorials/django-password-reset-tutorial
+
+*   nota! con respecto al login, por ahora solo se ve si entramos a http://127.0.0.1:8000/accounts/login/
