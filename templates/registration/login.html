@@ -6,7 +6,7 @@
 {% block content %}
 <h2>Iniciar sesion</h2>
 <p> ¿Olvidaste tu contraseña? </p>
-<a href="../password_reset/">Sí, deseo recuperar mi contraseña</a> |
+<a href="../password_reset/">Sí, deseo recuperar mi contraseña</a>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
