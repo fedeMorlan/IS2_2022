@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 class Paciente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    dni = models.CharField(max_length=8,help_text='DNI')
+    dni = models.CharField(max_length=8, help_text='DNI')
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150)
@@ -76,11 +76,11 @@ class Dueno(models.Model):
     dni = models.CharField(max_length=8)
     email = models.EmailField(max_length=150)
     # password
-    
+
 
 @receiver(post_save, sender=User)
 def update_profile_signal(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+        Paciente.objects.create(user=instance)
+    instance.paciente.save()
 # Create your models here.

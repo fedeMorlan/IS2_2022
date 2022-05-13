@@ -10,7 +10,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .forms import SignUpForm
 from django.contrib.auth.models import User
-
+from django.views.generic import TemplateView
+from django.views.generic import RedirectView
 """
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
@@ -21,14 +22,15 @@ class SignUpView(generic.CreateView):
     template_name = "registration/signup.html"
 """
 
+
 def signup_view(request):
     form = SignUpForm(request.POST)
     if form.is_valid():
         user = form.save()
         user.refresh_from_db()
-        user.profile.first_name = form.cleaned_data.get('first_name')
-        user.profile.last_name = form.cleaned_data.get('last_name')
-        user.profile.email = form.cleaned_data.get('email')
+        user.paciente.first_name = form.cleaned_data.get('first_name')
+        user.paciente.last_name = form.cleaned_data.get('last_name')
+        user.paciente.email = form.cleaned_data.get('email')
         user.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
@@ -39,3 +41,5 @@ def signup_view(request):
     # else:
     #    form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+
