@@ -2,10 +2,11 @@
 from django.urls import path
 
 # from .views import SignUpView
-from .views import signup_view
+from .views import signup_view, vacunasAnteriores_view
 
 
 urlpatterns = [
     # path("signup/", SignUpView.as_view(), name="signup"),
     path('signup/', signup_view, name="signup"),
+    path('vacunasant/', vacunasAnteriores_view, name="vacunas viejas"),
 ]

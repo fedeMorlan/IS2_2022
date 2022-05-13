@@ -1,9 +1,14 @@
+from tkinter.tix import Form
+from urllib import request
+from urllib.request import Request
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
+from accounts.models import VacunasAnteriores
 
 
 class SignUpForm(UserCreationForm):
@@ -28,3 +33,13 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name',
                   'email', 'password1', 'password2',)
+
+class VacunasAnterioresForm(ModelForm):
+    opciones = [('True', 'Si'), ('False', 'No')]
+    fiebre_amarilla = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Fiebre Amarilla')
+    gripe = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Gripe ',)
+    covid_1 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 1')
+    covid_2 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 2')
+    class Meta:
+        model = VacunasAnteriores
+        fields = ('fiebre_amarilla', 'gripe', 'covid_1', 'covid_2')

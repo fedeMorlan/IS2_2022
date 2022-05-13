@@ -27,4 +27,5 @@ urlpatterns = [
     # esto es para el logueo de users generados a traves del superuser de django
     # https://learndjango.com/tutorials/django-login-and-logout-tutorial
     path("accounts/", include("django.contrib.auth.urls")),  # new
+    
 ]
