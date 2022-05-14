@@ -42,7 +42,7 @@ class Aplicacion(models.Model):
 
 
 class VacunasAnteriores(models.Model):
-    id_paciente = models.ForeignKey
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     fiebre_amarilla = models.BooleanField
     gripe = models.BooleanField
     covid_1 = models.BooleanField
