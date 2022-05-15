@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.idea",
+    "\\accounts",
+    "\\pages",
+    "\\templates",
+    "\\templates\\registration",
+    "\\vacunassist"
+  ],
+  "SelectedNode": "\\accounts\\views.py",
+  "PreviewInSolutionExplorer": false
+}
