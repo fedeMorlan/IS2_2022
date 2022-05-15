@@ -28,6 +28,7 @@ def signup_view(request):
     if form.is_valid():
         user = form.save()
         user.refresh_from_db()
+        user.paciente.dni = form.cleaned_data.get('dni')
         user.paciente.first_name = form.cleaned_data.get('first_name')
         user.paciente.last_name = form.cleaned_data.get('last_name')
         user.paciente.email = form.cleaned_data.get('email')
@@ -41,5 +42,8 @@ def signup_view(request):
     # else:
     #    form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def userinfo_view(request):
+    return render(request, 'userinfo.html')
 
 

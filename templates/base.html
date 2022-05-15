@@ -9,6 +9,9 @@
     <header>
         <a href="{% url 'home' %}">Inicio</a> 
         <a href="{% url 'about' %}">Información</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'userinfo' %}">Mis Datos</a>
+        {% endif %}
     </header>
     <body>
         <main>
