@@ -43,20 +43,22 @@ def signup_view(request):
     #    form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-<<<<<<< HEAD
 def userinfo_view(request):
     return render(request, 'userinfo.html')
-=======
+
 def vacunasAnteriores_view(request):
-    form = VacunasAnterioresForm(request.POST)
-    if form.is_valid():
-        vacun = form.save(commit = False)
-        vacun.user = request.user
-        vacun.save()
+   form = VacunasAnterioresForm(request.POST)
+   if form.is_valid():
+       vacun = form.save(commit = False)
+       vacun.fiebre_amarilla = form.cleaned_data.get('fiebre_amarilla')
+       vacun.gripe = form.cleaned_data.get('gripe')
+       vacun.covid_1 = form.cleaned_data.get('covid_1')
+       vacun.covid_2 = form.cleaned_data.get('covid_2')
+       vacun.user = request.user
+       vacun.save()
 
-    return render(request, 'vacunas_anteriores.html', {'form' : form})
+   return render(request, 'vacunas_anteriores.html', {'form' : form})
 
 
->>>>>>> 666ddb3 (primer version vacunas anteriores)
 
 

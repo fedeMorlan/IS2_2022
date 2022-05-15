@@ -42,7 +42,11 @@ class Aplicacion(models.Model):
 
 
 class VacunasAnteriores(models.Model):
-    nombre_vacuna = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default= 1)
+    fiebre_amarilla = models.BooleanField(null = True)
+    gripe = models.BooleanField(null = True)
+    covid_1 = models.BooleanField(null = True)
+    covid_2 = models.BooleanField(null = True)
 
 
 class Pacientevacunas(models.Model):
