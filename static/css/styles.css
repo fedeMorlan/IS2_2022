@@ -14,28 +14,29 @@ li {
     padding: 1em;
 }
 
-ul li a, ul li a:visited {
+.linkBoton, .linkBoton:visited {
     outline: none;
     text-decoration: none;
     text-align: center;
+    min-width: max-content;
     color: whitesmoke;
     display: inline-block;
     border-radius: 0.7em;
-    background: rgb(175, 113, 255);
+    background: rgb(172, 131, 203);
     width: 20%;
     line-height: 2;
     box-shadow: 2px 2px 2px black, inset 2px 2px rgba(255, 255, 255, 0.6), inset -2px -2px rgba(0,0,0,0.2);
     background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.24));
 }
 
-ul li a:active {
+.linkBoton:active {
     box-shadow: 2px 2px 2px black, inset 2px 2px rgba(0, 0, 0, 0.2), inset -2px -2px rgba(255, 255, 255, 0.6);
     background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.5));
 }
 
-ul li a:focus{
+.linkBoton:focus{
     outline: #000 2px;
-    background: rgb(145, 83, 225);
+    background: rgb(142, 101, 173);
     background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.44));
 }
 
@@ -45,6 +46,7 @@ header a {
     font-weight: bold;
     display: inline-block;
     width: 19.5%;
+    min-width: max-content; 
     margin-right: 0.625%;
     text-align: center;
     line-height: 3;
@@ -52,11 +54,11 @@ header a {
 }
 
 header a:link, a:visited, a:focus {
-    background: rgb(175, 231, 175);
+    background: rgb(172 213 141);
   }
   
 header a:hover {
-    background: rgb(125, 191, 125);
+    background: rgb(112 153 81);
     color: white;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
@@ -64,11 +66,26 @@ header a:hover {
 }
   
 header a:active {
-    background: rgb(175, 113, 255);
+    background: rgb(142, 101, 173);
     color: white;
     -webkit-transition: none;
     -moz-transition: none;
     transition: none;
+}
+
+.logo img {
+    width: 200px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+}
+
+.logo p{
+    margin: 0;
+    font-size: 3em;
+    font-weight: bold;
+
 }
 
 body {
@@ -78,7 +95,7 @@ body {
 }
 
 header, footer {
-    background-color: rgb(171, 226, 171);
+    background-color: rgb(162 203 131);;
     color: white;
     line-height: 80px;
     padding: 0 20px;
@@ -91,9 +108,9 @@ form {
     margin: 0 auto;
     width: fit-content;
     padding: 1em;
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgb(172 213 141);
     border-radius: 1em;
-    background-color: rgb(185, 255, 188);
+    background-color: rgb(192 233 161);
 }
 
 div+div {
@@ -147,7 +164,7 @@ button {
 button:hover,
 button:focus {
     outline     : none;
-    background  : rgb(0, 137, 36);
+    background  : rgb(162, 121, 193);
     color       : #FFF;
 }
 
