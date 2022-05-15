@@ -1,0 +1,221 @@
+commit ad0ad8cb609219d245f3209b99beac4f12598485
+tree aab05b780d3a1d5efdd667b4bf1a32f856e329b1
+parent a37cf72628f53cb55efb5a0d36541ce3a186f571
+parent 887c151e8d749816cacdb3bfb04edf79fd9ab033
+parent 127a9d82da4da7e654fdb713f2198ead7d105d23
+author Segundo Ayllon <sasegundoayllon@gmail.com> 1652485735 -0300
+committer Segundo Ayllon <sasegundoayllon@gmail.com> 1652485735 -0300
+
+    On main: Extrayendo segundo del repositorio
+    
+    Los cambios pendientes de confirmación se guardan provisionalmente antes de realizar una extracción del repositorio de "segundo". Quite los últimos cambios guardados provisionalmente o aplíquelos para restaurarlos.
+
+diff --cc accounts/forms.py
+index 9d80329,9d80329,0000000..5b007a5
+mode 100644,100644,000000..100644
+--- a/accounts/forms.py
++++ b/accounts/forms.py
+@@@@ -1,30 -1,30 -1,0 +1,45 @@@@
++++from tkinter.tix import Form
++++from urllib import request
++++from urllib.request import Request
+  +from django import forms
+  +from django.contrib.auth.models import User
+  +from django.contrib.auth import (
+  +    authenticate, get_user_model, password_validation,
+  +)
+  +from django.contrib.auth.forms import UserCreationForm
++++from django.forms import ModelForm
++++from accounts.models import VacunasAnteriores
+  +
+  +
+  +class SignUpForm(UserCreationForm):
+  +    first_name = forms.CharField(max_length=100, help_text='Nombre', label='Nombre')
+  +    last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
+  +    email = forms.EmailField(max_length=150, help_text='Email', label='Email')
+  +    username = forms.CharField(max_length=150, help_text='Nombre de Usuario', label='Nombre de Usuario')
+  +
+  +    password1 = forms.CharField(
+  +        label="Contraseña",
+  +        strip=False,
+  +        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+  +        help_text=password_validation.password_validators_help_text_html(),
+  +    )
+  +    password2 = forms.CharField(
+  +        label="Confirmación de contraseña",
+  +        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+  +        strip=False,
+  +        help_text="Ingresar la misma contraseña que antes, para verificación.",
+  +    )
+  +    class Meta:
+  +        model = User
+  +        fields = ('username', 'first_name', 'last_name',
+  +                  'email', 'password1', 'password2',)
++++
++++class VacunasAnterioresForm(ModelForm):
++++    opciones = [('True', 'Si'), ('False', 'No')]
++++    fiebre_amarilla = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Fiebre Amarilla')
++++    gripe = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Gripe ',)
++++    covid_1 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 1')
++++    covid_2 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 2')
++++    class Meta:
++++        model = VacunasAnteriores
++++        fields = ('fiebre_amarilla', 'gripe', 'covid_1', 'covid_2')
+diff --cc accounts/models.py
+index 9e9866f,9e9866f,0000000..cf6c37a
+mode 100644,100644,000000..100644
+--- a/accounts/models.py
++++ b/accounts/models.py
+@@@@ -1,87 -1,87 -1,0 +1,91 @@@@
+  +from django.db import models
+  +from django.contrib.auth.models import User
+  +from django.db.models.signals import post_save
+  +from django.dispatch import receiver
+  +
+  +
+  +# tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
+  +
+  +class Paciente(models.Model):
+  +    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  +    dni = models.CharField(max_length=8, help_text='DNI')
+  +    first_name = models.CharField(max_length=100, blank=True)
+  +    last_name = models.CharField(max_length=100, blank=True)
+  +    email = models.EmailField(max_length=150)
+  +    bio = models.TextField()
+  +    # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
+  +
+  +    def __str__(self):
+  +        return self.user.username
+  +
+  +
+  +class CentroDeVacunacion(models.Model):
+  +    nombre = models.CharField(max_length=100, primary_key=True)
+  +    direccion = models.CharField(max_length=100)
+  +
+  +
+  +class Vacuna(models.Model):
+  +    nombrevacuna = models.CharField(max_length=100, primary_key=True)
+  +    numero_de_lote = models.IntegerField
+  +    # YYYY-MM-DD
+  +    fecha_vencimiento = models.DateField
+  +
+  +
+  +class Aplicacion(models.Model):
+  +    # ya es primary key por ser AutoField
+  +    id_aplicacion = models.AutoField
+  +    nombrevacuna = models.CharField(max_length=100)
+  +    fecha_de_aplicacion = models.DateField
+  +    # no estoy seguro de como funciona el ForeignKey
+  +    id_paciente = models.ForeignKey
+  +    id_vacunador = models.ForeignKey
+  +
+  +
+  +class VacunasAnteriores(models.Model):
+--     nombre_vacuna = models.CharField(max_length=100)
++++    id_paciente = models.ForeignKey
++++    fiebre_amarilla = models.BooleanField
++++    gripe = models.BooleanField
++++    covid_1 = models.BooleanField
++++    covid_2 = models.BooleanField
+  +
+  +
+  +class Pacientevacunas(models.Model):
+  +    id_pacientevacunas = models.AutoField
+  +    nombreusuario = models.ForeignKey
+  +    nombre_vacuna = models.ForeignKey
+  +
+  +
+  +class Turno(models.Model):
+  +    id_turno = models.AutoField
+  +    nombreusuario = models.ForeignKey
+  +    hora = models.TimeField
+  +    fecha = models.DateField
+  +
+  +
+  +class Vacunador(models.Model):
+  +    nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  +    dni = models.CharField(max_length=8)
+  +    email = models.EmailField(max_length=150)
+  +    # password
+  +
+  +
+  +class TrabajaEn(models.Model):
+  +    id_trabaja_en = models.AutoField
+  +    nombreusuario = models.ForeignKey
+  +    nombrecentro = models.ForeignKey
+  +
+  +
+  +class Dueno(models.Model):
+  +    nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  +    dni = models.CharField(max_length=8)
+  +    email = models.EmailField(max_length=150)
+  +    # password
+  +
+  +
+  +@receiver(post_save, sender=User)
+  +def update_profile_signal(sender, instance, created, **kwargs):
+  +    if created:
+  +        Paciente.objects.create(user=instance)
+  +    instance.paciente.save()
+  +    # instance.profile.save()
+  +# Create your models here.
+diff --cc accounts/urls.py
+index c4b4b42,c4b4b42,0000000..257b6a8
+mode 100644,100644,000000..100644
+--- a/accounts/urls.py
++++ b/accounts/urls.py
+@@@@ -1,11 -1,11 -1,0 +1,12 @@@@
+  +# accounts/urls.py
+  +from django.urls import path
+  +
+  +# from .views import SignUpView
+-- from .views import signup_view
++++from .views import signup_view, vacunasAnteriores_view
+  +
+  +
+  +urlpatterns = [
+  +    # path("signup/", SignUpView.as_view(), name="signup"),
+  +    path('signup/', signup_view, name="signup"),
++++    path('vacunasant/', vacunasAnteriores_view, name="vacunas viejas"),
+  +]
+diff --cc db.sqlite3
+index 8029e4b,8029e4b,0000000..25ebbaf
+mode 100644,100644,000000..100644
+Binary files differ
+diff --cc vacunassist/urls.py
+index 6ae0cb9,6ae0cb9,0000000..41ad571
+mode 100644,100644,000000..100644
+--- a/vacunassist/urls.py
++++ b/vacunassist/urls.py
+@@@@ -1,30 -1,30 -1,0 +1,31 @@@@
+  +"""vacunassist URL Configuration
+  +
+  +The `urlpatterns` list routes URLs to views. For more information please see:
+  +    https://docs.djangoproject.com/en/4.0/topics/http/urls/
+  +Examples:
+  +Function views
+  +    1. Add an import:  from my_app import views
+  +    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+  +Class-based views
+  +    1. Add an import:  from other_app.views import Home
+  +    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+  +Including another URLconf
+  +    1. Import the include() function: from django.urls import include, path
+  +    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+  +"""
+  +from django.contrib import admin
+  +from django.urls import path, include   # new
+  +from django.views.generic.base import TemplateView
+  +
+  +urlpatterns = [
+  +    path('admin/', admin.site.urls),
+  +    path('', include("pages.urls")),   # new
+  +
+  +    # esto es para el registro de users
+  +    # https://learndjango.com/tutorials/django-signup-tutorial
+  +    path("accounts/", include("accounts.urls")),  # new
+  +    # esto es para el logueo de users generados a traves del superuser de django
+  +    # https://learndjango.com/tutorials/django-login-and-logout-tutorial
+  +    path("accounts/", include("django.contrib.auth.urls")),  # new
++++    
+  +]
