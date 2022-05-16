@@ -1,7 +1,10 @@
 {% extends "base.html" %}
+{% block title %}Cambiar contraseña{% endblock %}
 
+{% block content %}
 <form method="post">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Guardar cambio</button>
   </form>
+{% endblock content %}
