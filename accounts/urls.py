@@ -2,7 +2,7 @@
 from django.urls import path
 
 # from .views import SignUpView
-from .views import signup_view, vacunasAnteriores_view
+from .views import *
 from .views import userinfo_view
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('signup/', signup_view, name="signup"),
     path('informacion/', userinfo_view, name="userinfo"),
     path('vacunasant/', vacunasAnteriores_view, name='Vacunas anteriores'),
+    path('cambiarcontrasena/', cambiarContraseña_view, name='Cambiar contraseña')
     ]

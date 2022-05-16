@@ -2,12 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\.idea",
-    "\\accounts",
-    "\\pages",
-    "\\templates",
-    "\\templates\\registration",
-    "\\vacunassist"
+    "\\accounts\\migrations",
+    "\\templates\\registration"
   ],
-  "SelectedNode": "\\accounts\\views.py",
+  "SelectedNode": "\\pages",
   "PreviewInSolutionExplorer": false
 }
