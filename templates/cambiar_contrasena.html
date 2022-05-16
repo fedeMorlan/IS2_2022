@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Guardar cambio</button>
+  </form>
