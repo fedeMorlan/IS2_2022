@@ -63,15 +63,15 @@ class Pacientevacunas(models.Model):
 
 class Turno(models.Model):
     id_turno = models.AutoField
-    nombreusuario = models.ForeignKey
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
     hora = models.TimeField
     fecha = models.DateField
 
 
 class TrabajaEn(models.Model):
     id_trabaja_en = models.AutoField
-    nombreusuario = models.ForeignKey
-    nombrecentro = models.ForeignKey
+    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=CASCADE)
+    nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=CASCADE)
 
 
 class Dueno(models.Model):
