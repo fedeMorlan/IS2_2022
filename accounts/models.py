@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -30,6 +31,11 @@ class Vacuna(models.Model):
     # YYYY-MM-DD
     fecha_vencimiento = models.DateField
 
+class Vacunador(models.Model):
+    nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    dni = models.CharField(max_length=8)
+    email = models.EmailField(max_length=150)
+    # password
 
 class Aplicacion(models.Model):
     # ya es primary key por ser AutoField
@@ -37,8 +43,8 @@ class Aplicacion(models.Model):
     nombrevacuna = models.CharField(max_length=100)
     fecha_de_aplicacion = models.DateField
     # no estoy seguro de como funciona el ForeignKey
-    id_paciente = models.ForeignKey
-    id_vacunador = models.ForeignKey
+    id_paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
+    id_vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=CASCADE)
 
 
 class VacunasAnteriores(models.Model):
@@ -51,28 +57,21 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
-    nombreusuario = models.ForeignKey
-    nombre_vacuna = models.ForeignKey
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
+    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
 
 
 class Turno(models.Model):
     id_turno = models.AutoField
-    nombreusuario = models.ForeignKey
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
     hora = models.TimeField
     fecha = models.DateField
 
 
-class Vacunador(models.Model):
-    nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    dni = models.CharField(max_length=8)
-    email = models.EmailField(max_length=150)
-    # password
-
-
 class TrabajaEn(models.Model):
     id_trabaja_en = models.AutoField
-    nombreusuario = models.ForeignKey
-    nombrecentro = models.ForeignKey
+    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=CASCADE)
+    nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=CASCADE)
 
 
 class Dueno(models.Model):
