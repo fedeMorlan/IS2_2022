@@ -11,7 +11,7 @@ class Paciente(models.Model):
     dni = models.CharField(max_length=8, help_text='DNI')
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=150)
+    email = models.EmailField(max_length=150, unique=True)
     bio = models.TextField()
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
