@@ -43,8 +43,8 @@ class Aplicacion(models.Model):
     nombrevacuna = models.CharField(max_length=100)
     fecha_de_aplicacion = models.DateField
     # no estoy seguro de como funciona el ForeignKey
-    id_paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
-    id_vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=CASCADE)
+    id_paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
+    id_vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class VacunasAnteriores(models.Model):

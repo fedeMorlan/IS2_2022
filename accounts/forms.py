@@ -30,6 +30,11 @@ class SignUpForm(UserCreationForm):
         strip=False,
         help_text="Ingresar la misma contraseña que antes, para verificación.",
     )
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este email ya está registrado")
+    
     class Meta:
         model = User
         fields = ('username', 'dni', 'first_name', 'last_name',
