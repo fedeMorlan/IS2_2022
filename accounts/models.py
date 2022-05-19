@@ -60,8 +60,13 @@ class VacunasAnteriores(models.Model):
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
 <<<<<<< HEAD
+<<<<<<< HEAD
     nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
     nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
+=======
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
+    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
+>>>>>>> 885ce8f (correccion en models)
 =======
     nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
