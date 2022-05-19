@@ -57,21 +57,21 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
-    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
+    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class Turno(models.Model):
     id_turno = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
+    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     hora = models.TimeField
     fecha = models.DateField
 
 
 class TrabajaEn(models.Model):
     id_trabaja_en = models.AutoField
-    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=CASCADE)
-    nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=CASCADE)
+    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
+    nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class Dueno(models.Model):
