@@ -59,13 +59,8 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
-<<<<<<< HEAD
     nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
     nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
-=======
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
-    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
->>>>>>> 885ce8ff5ca5bad7ad6915859443fed77fe06015
 
 
 class Turno(models.Model):
