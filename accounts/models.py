@@ -3,9 +3,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.deletion import *
 
 
 # tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
+
+class CentroDeVacunacion(models.Model):
+    nombre = models.CharField(max_length=100, primary_key=True)
+    direccion = models.CharField(max_length=100)
 
 class Paciente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -16,15 +21,11 @@ class Paciente(models.Model):
     bio = models.TextField()
     sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     sexo = models.CharField(max_length=2, choices=sexos,default='NC')
+    centro_vacunacion = models.ForeignKey(CentroDeVacunacion, null=True, blank=True,on_delete=DO_NOTHING)
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
     def __str__(self):
         return self.user.username
-
-
-class CentroDeVacunacion(models.Model):
-    nombre = models.CharField(max_length=100, primary_key=True)
-    direccion = models.CharField(max_length=100)
 
 
 class Vacuna(models.Model):
@@ -60,7 +61,7 @@ class VacunasAnteriores(models.Model):
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
     nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
-    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
+    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class Turno(models.Model):

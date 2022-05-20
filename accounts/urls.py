@@ -10,5 +10,6 @@ urlpatterns = [
     path('signup/', signup_view, name="signup"),
     path('informacion/', userinfo_view, name="userinfo"),
     path('vacunasant/', vacunasAnteriores_view, name='Vacunas anteriores'),
-    path('cambiarcontrasena/', cambiarContraseña_view, name='Cambiar contraseña')
+    path('cambiarcontrasena/', cambiarContraseña_view, name='Cambiar contraseña'),
+    path('elegir_centro/', elegirCentro_view, name='Elegir centro de vacunacion')
     ]

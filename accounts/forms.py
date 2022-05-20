@@ -6,7 +6,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm
 
-from accounts.models import VacunasAnteriores
+from accounts.models import CentroDeVacunacion, VacunasAnteriores
 
 
 
@@ -49,3 +49,10 @@ class VacunasAnterioresForm(ModelForm):
     class Meta:
         model = VacunasAnteriores
         fields = ('fiebre_amarilla', 'gripe', 'covid_1', 'covid_2')
+
+class ElegirCentroForm(ModelForm):
+    opciones = [('1','Centro 1'),('2','Centro 2'),('3','Centro 3')]
+    centros = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
+    class Meta:
+        model = CentroDeVacunacion
+        fields = ('centros',) 
