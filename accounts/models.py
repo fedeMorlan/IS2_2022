@@ -14,6 +14,8 @@ class Paciente(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150, unique=True)
     bio = models.TextField()
+    sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
+    sexo = models.CharField(max_length=2, choices=sexos,default='NC')
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
     def __str__(self):
@@ -57,7 +59,7 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=CASCADE)
+    nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
     nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
 
 
