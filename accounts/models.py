@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.deletion import *
 
 
 # tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
@@ -16,10 +17,16 @@ class Paciente(models.Model):
     bio = models.TextField()
     sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     sexo = models.CharField(max_length=2, choices=sexos,default='NC')
+    fecha_nacimiento = models.DateField
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
     def __str__(self):
-        return self.user.username
+        letra = 'e'
+        if(self.sexo == 'F'):
+            letra = 'a'
+        elif(self.sexo  == 'M'):
+            letra = 'o'
+        return f'Bienvenid{letra} ' + self.user.username
 
 
 class CentroDeVacunacion(models.Model):
@@ -59,8 +66,8 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
-    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=CASCADE)
+    nombreusuario = models.ForeignKey(Paciente,null=True, blank=False, on_delete=SET_NULL)
+    nombre_vacuna = models.ForeignKey(Vacuna,null=True, blank=False, on_delete=SET_NULL)
 
 
 class Turno(models.Model):

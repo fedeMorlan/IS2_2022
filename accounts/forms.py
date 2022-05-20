@@ -15,8 +15,11 @@ class SignUpForm(UserCreationForm):
     dni = forms.CharField(max_length=8, help_text='DNI sin puntos', label='DNI')
     first_name = forms.CharField(max_length=100, help_text='Nombre', label='Nombre')
     last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
+    sexo = forms.CharField(max_length=2, help_text='Femenino(F) Masculino (M) No Binario (NB)',label='Sexo')
+    fecha_nacimiento = forms.DateField(label='Fecha de nacimiento')
     email = forms.EmailField(max_length=150, help_text='Email', label='Email')
     username = forms.CharField(max_length=150, help_text='Nombre de Usuario', label='Nombre de Usuario')
+    
 
     password1 = forms.CharField(
         label="Contraseña",

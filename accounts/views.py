@@ -32,6 +32,8 @@ def signup_view(request):
         user.paciente.dni = form.cleaned_data.get('dni')
         user.paciente.first_name = form.cleaned_data.get('first_name')
         user.paciente.last_name = form.cleaned_data.get('last_name')
+        user.paciente.sexo = form.cleaned_data.get('sexo')
+        user.paciente.fecha_nacimiento = form.cleaned_data.get('fecha_nacimiento')
         user.paciente.email = form.cleaned_data.get('email')
         user.save()
         username = form.cleaned_data.get('username')
