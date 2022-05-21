@@ -3,12 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 
 # builtin: UserCreationForm para registro
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import SignUpForm, VacunasAnterioresForm
+from django.contrib import messages
+from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -51,6 +52,32 @@ def vacunasAnteriores_view(request):
 
     return render(request, 'vacunas_anteriores.html', {'form' : form})
 
+def userinfo_view(request):
+    return render(request, 'userinfo.html')
+
+def cambiarContraseña_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Tu contraseña se cambió correctamente')
+            return redirect('home')
+        else:
+            messages.error(request, 'Ocurrió un error, intente nuevamente.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'cambiar_contrasena.html', {'form': form})
+
+def elegirCentro_view(request):
+     form = ElegirCentroForm(request.POST)
+     if form.is_valid():
+        centro = form.save(commit = False)
+        centro.centros = form.cleaned_data.get('centros')
+        centro.user = request.user
+        centro.save()
+
+     return render(request, 'elegir_centro.html', {'form' : form})
 
 
 

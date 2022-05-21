@@ -1,7 +1,8 @@
+
 <!-- templates/home.html -->
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
 <h1>VacunAssist</h1>
@@ -11,7 +12,9 @@
   <p><a href="{% url 'logout' %}">Cerrar Sesion</a></p>
 {% else %}
   <p>Debes iniciar sesion para continuar</p>
-  <a href="{% url 'login' %}">Iniciar Sesion</a>
-  <a href="{% url 'signup' %}">Registrarse</a>
+  <ul>
+    <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
+    <li><a href="{% url 'signup' %}">Registrarse</a></li>
+  </ul>
 {% endif %}
 {% endblock content %}

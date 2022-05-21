@@ -6,6 +6,69 @@ ul {
     margin: 0;
     padding: 0;
     list-style: none;
+
+}
+
+li {
+    display: inline;
+    padding: 1em;
+}
+
+ul li a, ul li a:visited {
+    outline: none;
+    text-decoration: none;
+    text-align: center;
+    color: whitesmoke;
+    display: inline-block;
+    border-radius: 0.7em;
+    background: rgb(175, 113, 255);
+    width: 20%;
+    line-height: 2;
+    box-shadow: 2px 2px 2px black, inset 2px 2px rgba(255, 255, 255, 0.6), inset -2px -2px rgba(0,0,0,0.2);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.24));
+}
+
+ul li a:active {
+    box-shadow: 2px 2px 2px black, inset 2px 2px rgba(0, 0, 0, 0.2), inset -2px -2px rgba(255, 255, 255, 0.6);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.5));
+}
+
+ul li a:focus{
+    outline: #000 2px;
+    background: rgb(145, 83, 225);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.44));
+}
+
+header a {
+    outline: none;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    width: 19.5%;
+    margin-right: 0.625%;
+    text-align: center;
+    line-height: 3;
+    color: black;
+}
+
+header a:link, a:visited, a:focus {
+    background: rgb(175, 231, 175);
+  }
+  
+header a:hover {
+    background: rgb(125, 191, 125);
+    color: white;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+  
+header a:active {
+    background: rgb(175, 113, 255);
+    color: white;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
 }
 
 body {
@@ -20,6 +83,9 @@ header, footer {
     line-height: 80px;
     padding: 0 20px;
   }
+
+
+
 
 form {
     margin: 0 auto;
@@ -64,13 +130,19 @@ textarea {
 
 button {
     padding      : 1.2em;
+    padding-left: 1.7em;
+    padding-right: 1.7em;
     font         : bold .8em sans-serif;
     border       : 2px solid #333;
     border-radius: 5px;
     background   : rgb(215, 255, 215);
     cursor       : pointer;
+    
 }
 
+.buttonholder{
+    text-align: center;
+}
 
 button:hover,
 button:focus {
@@ -89,5 +161,9 @@ fieldset {
 
 
 label {
-  position: relative;
+    position: relative;
+}
+
+.centertext{
+    text-align: center;
 }
