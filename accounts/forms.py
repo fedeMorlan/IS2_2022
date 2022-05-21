@@ -34,6 +34,7 @@ class SignUpForm(UserCreationForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Este email ya está registrado")
+        return email
     
     class Meta:
         model = User

@@ -17,7 +17,7 @@ class Paciente(models.Model):
     dni = models.CharField(max_length=8, help_text='DNI')
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=150, unique=True)
+    email = models.EmailField(max_length=150,null=True, unique=True)
     bio = models.TextField()
     sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     sexo = models.CharField(max_length=2, choices=sexos,default='NC')
