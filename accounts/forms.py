@@ -7,15 +7,9 @@ from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
 from django.contrib.auth.forms import UserCreationForm
-<<<<<<< HEAD
 from django.forms import ModelForm
 from accounts.models import VacunasAnteriores, CentroDeVacunacion
-=======
 
-from accounts.models import CentroDeVacunacion, VacunasAnteriores
-
-
->>>>>>> 856d9a216734950c926e57902d9746624bca4538
 
 
 class SignUpForm(UserCreationForm):
@@ -42,13 +36,8 @@ class SignUpForm(UserCreationForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Este email ya está registrado")
-<<<<<<< HEAD
         else: return email
-   
-=======
-        return email
-    
->>>>>>> 856d9a216734950c926e57902d9746624bca4538
+
     class Meta:
         model = User
         fields = ('username', 'dni', 'first_name', 'last_name',
@@ -69,8 +58,5 @@ class ElegirCentroForm(ModelForm):
     centros = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
     class Meta:
         model = CentroDeVacunacion
-<<<<<<< HEAD
         fields = ('centros',)
-=======
-        fields = ('centros',) 
->>>>>>> 856d9a216734950c926e57902d9746624bca4538
+
