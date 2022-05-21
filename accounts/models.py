@@ -3,28 +3,36 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.deletion import *
 
 
 # tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
+
+class CentroDeVacunacion(models.Model):
+    nombre = models.CharField(max_length=100, primary_key=True)
+    direccion = models.CharField(max_length=100)
 
 class Paciente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     dni = models.CharField(max_length=8, help_text='DNI')
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
+<<<<<<< HEAD
     email = models.EmailField(max_length=150)
     bio = models.TextField()
     #sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     #sexo = models.CharField(max_length=2, choices=sexos,default='NC')
+=======
+    email = models.EmailField(max_length=150,null=True, unique=True)
+    bio = models.TextField()
+    sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
+    sexo = models.CharField(max_length=2, choices=sexos,default='NC')
+    centro_vacunacion = models.ForeignKey(CentroDeVacunacion, null=True, blank=True,on_delete=DO_NOTHING)
+>>>>>>> 856d9a216734950c926e57902d9746624bca4538
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
     def __str__(self):
         return self.user.username
-
-
-class CentroDeVacunacion(models.Model):
-    nombre = models.CharField(max_length=100, primary_key=True)
-    direccion = models.CharField(max_length=100)
 
 
 class Vacuna(models.Model):
@@ -59,9 +67,14 @@ class VacunasAnteriores(models.Model):
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
+<<<<<<< HEAD
     nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
 
+=======
+    nombreusuario = models.ForeignKey(Paciente,null=False, blank=False, on_delete=models.CASCADE)
+    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
+>>>>>>> 856d9a216734950c926e57902d9746624bca4538
 
 
 class Turno(models.Model):

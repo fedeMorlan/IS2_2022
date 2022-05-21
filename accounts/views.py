@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from .forms import SignUpForm, VacunasAnterioresForm
+from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -75,6 +75,16 @@ def cambiarContraseña_view(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'cambiar_contrasena.html', {'form': form})
+
+def elegirCentro_view(request):
+     form = ElegirCentroForm(request.POST)
+     if form.is_valid():
+        centro = form.save(commit = False)
+        centro.centros = form.cleaned_data.get('centros')
+        centro.user = request.user
+        centro.save()
+
+     return render(request, 'elegir_centro.html', {'form' : form})
 
 
 
