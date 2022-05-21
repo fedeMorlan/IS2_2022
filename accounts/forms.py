@@ -2,6 +2,7 @@ from tkinter.tix import Form
 from urllib import request
 from urllib.request import Request
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
@@ -10,8 +11,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from accounts.models import VacunasAnteriores, CentroDeVacunacion
 
+from accounts.models import CentroDeVacunacion, VacunasAnteriores
+
+
+
 
 class SignUpForm(UserCreationForm):
+    dni = forms.CharField(max_length=8, help_text='DNI sin puntos', label='DNI')
     first_name = forms.CharField(max_length=100, help_text='Nombre', label='Nombre')
     last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
     email = forms.EmailField(max_length=150, help_text='Email', label='Email')
@@ -29,9 +35,15 @@ class SignUpForm(UserCreationForm):
         strip=False,
         help_text="Ingresar la misma contraseña que antes, para verificación.",
     )
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este email ya está registrado")
+        return email
+    
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name',
+        fields = ('username', 'dni', 'first_name', 'last_name',
                   'email', 'password1', 'password2',)
 
 class VacunasAnterioresForm(ModelForm):
@@ -49,4 +61,8 @@ class ElegirCentroForm(ModelForm):
     centros = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
     class Meta:
         model = CentroDeVacunacion
+<<<<<<< HEAD
         fields = ('centros',)
+=======
+        fields = ('centros',) 
+>>>>>>> 856d9a216734950c926e57902d9746624bca4538

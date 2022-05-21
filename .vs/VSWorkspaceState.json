@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\.idea",
+<<<<<<< HEAD
     "\\accounts",
     "\\pages",
     "\\templates",
@@ -9,5 +10,11 @@
     "\\vacunassist"
   ],
   "SelectedNode": "\\accounts\\views.py",
+=======
+    "\\accounts\\migrations",
+    "\\templates\\registration"
+  ],
+  "SelectedNode": "\\pages",
+>>>>>>> 856d9a216734950c926e57902d9746624bca4538
   "PreviewInSolutionExplorer": false
 }
