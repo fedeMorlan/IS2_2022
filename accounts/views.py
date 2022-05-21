@@ -59,6 +59,7 @@ def vacunasAnteriores_view(request):
        vacun.covid_2 = form.cleaned_data.get('covid_2')
        vacun.user = request.user
        vacun.save()
+       return redirect('userinfo')
 
    return render(request, 'vacunas_anteriores.html', {'form' : form})
 
@@ -83,6 +84,7 @@ def elegirCentro_view(request):
         centro.centros = form.cleaned_data.get('centros')
         centro.user = request.user
         centro.save()
+        return redirect('userinfo')
 
      return render(request, 'elegir_centro.html', {'form' : form})
 
