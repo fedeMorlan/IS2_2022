@@ -10,10 +10,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from .models import Paciente
-from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm
+from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
+from django.contrib.auth.decorators import login_required
 """
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
@@ -86,6 +87,27 @@ def elegirCentro_view(request):
         return redirect('userinfo')
 
     return render(request, 'elegir_centro.html', {'form' : form})
+    
+@login_required
+def modificarDatos_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    user_info = User.objects.get(id=user)
+    if request.method == 'POST':
+        form = ModificarDatosForm(request.POST, request.FILES, instance=paciente)
+        if form.is_valid():
+            paciente.dni = form.cleaned_data.get('dni')
+            paciente.email = form.cleaned_data.get('email')
+            user_info.first_name = form.cleaned_data.get('first_name')
+            user_info.last_name = form.cleaned_data.get('last_name')
+        
+            paciente.save()
+            user_info.save()
+            messages.success(request, 'Tus datos se modificaron correctamente')
+            return redirect('userinfo')
+    else:
+        form = ModificarDatosForm(instance=paciente)
+    return render(request, 'modificar_datos.html',{'form' : form})
 
 
 
