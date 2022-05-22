@@ -32,11 +32,11 @@ class SignUpForm(UserCreationForm):
         help_text="Ingresar la misma contraseña que antes, para verificación.",
     )
     
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Este email ya está registrado")
-        else: return email
+    #def clean_email(self):
+    #    email = self.cleaned_data.get('email')
+    #    if User.objects.filter(email=email).exists():
+    #        raise forms.ValidationError("Este email ya está registrado")
+    #    else: return email
 
     class Meta:
         model = User
@@ -68,11 +68,11 @@ class ModificarDatosForm(ModelForm):
            first_name = forms.CharField(max_length=100, label='Nombre')
            last_name = forms.CharField(max_length=100, label='Apellido')
            email = forms.EmailField(max_length=150, label='Email')
-           def clean_email(self):
-                email = self.cleaned_data.get('email')
-                if User.objects.filter(email=email).exists():
-                    raise forms.ValidationError("Este email ya está registrado")
-                else: return email
+           #def clean_email(self):
+           #     email = self.cleaned_data.get('email')
+           #     if User.objects.filter(email=email).exists():
+           #         raise forms.ValidationError("Este email ya está registrado")
+           #     else: return email
     else:
         pass
     class Meta:

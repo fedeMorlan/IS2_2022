@@ -98,6 +98,7 @@ def modificarDatos_view(request):
         if form.is_valid():    
             user_info.paciente.dni = form.cleaned_data.get('dni')
             user_info.paciente.email = form.cleaned_data.get('email')
+            user_info.email = user_info.paciente.email
             user_info.paciente.first_name = form.cleaned_data.get('first_name')
             user_info.paciente.last_name = form.cleaned_data.get('last_name')
             paciente.save()
