@@ -64,10 +64,10 @@ class ElegirCentroForm(ModelForm):
 
 class ModificarDatosForm(ModelForm):
     if User.is_authenticated:
-           dni = forms.CharField(max_length=8, help_text='DNI sin puntos', label='DNI')
-           first_name = forms.CharField(max_length=100, help_text='Nombre', label='Nombre')
-           last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
-           email = forms.EmailField(max_length=150, help_text='Email', label='Email')
+           dni = forms.CharField(max_length=8, label='DNI')
+           first_name = forms.CharField(max_length=100, label='Nombre')
+           last_name = forms.CharField(max_length=100, label='Apellido')
+           email = forms.EmailField(max_length=150, label='Email')
            def clean_email(self):
                 email = self.cleaned_data.get('email')
                 if User.objects.filter(email=email).exists():
@@ -77,4 +77,4 @@ class ModificarDatosForm(ModelForm):
         pass
     class Meta:
         model = Paciente
-        fields = ('dni', 'first_name', 'last_name','email')  
+        fields = ('dni', 'first_name', 'last_name', 'email')  
