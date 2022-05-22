@@ -9,7 +9,8 @@ from django.db.models.deletion import *
 # tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
 
 class CentroDeVacunacion(models.Model):
-    nombre = models.CharField(max_length=100, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
 
 class Paciente(models.Model):
@@ -19,6 +20,7 @@ class Paciente(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150)
     bio = models.TextField()
+    #centro_vacunacion = models.ForeignKey(CentroDeVacunacion, on_delete=models.DO_NOTHING)
     #sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     #sexo = models.CharField(max_length=2, choices=sexos,default='NC')
 
@@ -51,7 +53,7 @@ class Aplicacion(models.Model):
 
 
 class VacunasAnteriores(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default= 1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     fiebre_amarilla = models.BooleanField(null = True)
     gripe = models.BooleanField(null = True)
     covid_1 = models.BooleanField(null = True)
@@ -71,10 +73,10 @@ class Turno(models.Model):
     fecha = models.DateField
 
 
-class TrabajaEn(models.Model):
-    id_trabaja_en = models.AutoField
-    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
-    nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=models.CASCADE)
+#class TrabajaEn(models.Model):
+#    id_trabaja_en = models.AutoField
+#    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
+#    #nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class Dueno(models.Model):

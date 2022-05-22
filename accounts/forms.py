@@ -8,7 +8,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from accounts.models import VacunasAnteriores, CentroDeVacunacion
+from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion
 
 
 
@@ -45,8 +45,10 @@ class SignUpForm(UserCreationForm):
 
 class VacunasAnterioresForm(ModelForm):
     opciones = [('True', 'Si'), ('False', 'No')]
-    fiebre_amarilla = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Fiebre Amarilla')
-    gripe = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Gripe ',)
+    fiebre_amarilla = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Fiebre Amarilla',
+        help_text="En los ultimos 10 años")
+    gripe = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Gripe ',
+         help_text="En los ultimos 12 meses")
     covid_1 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 1')
     covid_2 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 2')
     class Meta:
@@ -54,9 +56,9 @@ class VacunasAnterioresForm(ModelForm):
         fields = ('fiebre_amarilla', 'gripe', 'covid_1', 'covid_2')
 
 class ElegirCentroForm(ModelForm):
-    opciones = [('1','Centro 1'),('2','Centro 2'),('3','Centro 3')]
-    centros = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
+    opciones = [('centro 1','Centro 1'),('centro 2','Centro 2'),('centro 3','Centro 3')]
+    nombre = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
     class Meta:
         model = CentroDeVacunacion
-        fields = ('centros',)
+        fields = ('nombre',)
 

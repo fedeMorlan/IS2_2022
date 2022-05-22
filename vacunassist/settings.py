@@ -134,4 +134,10 @@ LOGOUT_REDIRECT_URL = "home"   # new
 
 # agregado para recuperar contrasena (funcionalidad django)
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'recuperacion.pysoft@gmail.com'
+EMAIL_HOST_PASSWORD = 'ingenieria'
+DEFAULT_FROM_EMAIL = 'recuperacion.pysoft@gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
