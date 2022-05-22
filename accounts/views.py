@@ -34,7 +34,7 @@ def signup_view(request):
         user.paciente.dni = form.cleaned_data.get('dni')
         user.paciente.first_name = form.cleaned_data.get('first_name')
         user.paciente.last_name = form.cleaned_data.get('last_name')
-        user.email = form.cleaned_data.get('email')
+        user.paciente.email = form.cleaned_data.get('email')
         user.paciente.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
@@ -96,7 +96,7 @@ def modificarDatos_view(request):
     if request.method == 'POST':
         form = ModificarDatosForm(request.POST, request.FILES, instance=paciente)
         if form.is_valid():    
-            user_info.paciente.dni = form.cleaned_data.get('dni')
+            paciente.dni = form.cleaned_data.get('dni')
             user_info.paciente.email = form.cleaned_data.get('email')
             user_info.email = user_info.paciente.email
             user_info.paciente.first_name = form.cleaned_data.get('first_name')
