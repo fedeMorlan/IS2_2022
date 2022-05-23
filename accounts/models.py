@@ -59,6 +59,15 @@ class VacunasAnteriores(models.Model):
     covid_1 = models.BooleanField(null = True)
     covid_2 = models.BooleanField(null = True)
 
+    def __str__(self):
+        tupla = ()
+        if (self.fiebre_amarilla): tupla += ("fiebre amarilla",)
+        if (self.gripe): tupla += ("gripe",)
+        if (self.covid_1): tupla += ("covid dosis 1",)
+        if (self.covid_2): tupla += ("covid dosis 2",)
+        vax = ", ".join(tupla)
+        return vax
+
 
 class Pacientevacunas(models.Model):
     id_pacientevacunas = models.AutoField
