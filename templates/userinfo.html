@@ -6,17 +6,20 @@
 <h1>Mis Datos</h1>
 <p>
     <ul class="userinfo">
-        <li>Usuario: {{user.username}}</li>
-        <li>Dni: {{user.paciente.dni}}</li>
-        <li>Nombre: {{user.paciente.first_name}}</li>
-        <li>Apellido: {{user.paciente.last_name}}</li>
-        <li>Email: {{user.paciente.email}}</li>
-        <li>Centro elegido: {{request.centro}}</li>
+        <li><b>Usuario:</b> {{user.username}}</li>
+        <li><b>Dni:</b> {{user.paciente.dni}}</li>
+        <li><b>Nombre:</b> {{user.paciente.first_name}}</li>
+        <li><b>Apellido:</b> {{user.paciente.last_name}}</li>
+        <li><b>Email:</b> {{user.paciente.email}}</li>
+        <li><b>Centro elegido:</b> {{request.centro}}</li>
     </ul>
 </p>
-<a href="../cambiarcontrasena/"><button>Cambiar Contraseña</button></a>
-<a href="../elegir_centro/"><button>Elegir centro de vacunación</button></a>
-<a href="../vacunasant/"><button>Cargar mis vacunas previas</button></a>
-<a href="../modificar_datos/"><button>Modificar datos del perfil</button></a>
+<ul class="botonera">
+    <a href="../cambiarcontrasena/"><button>Cambiar Contraseña</button></a>
+    <a href="../elegir_centro/"><button>Elegir centro de vacunación</button></a>
+    <a href="../vacunasant/"><button>Cargar mis vacunas previas</button></a>
+    <a href="../modificar_datos/"><button>Modificar datos del perfil</button></a>
+</ul>
+
 
 {% endblock content %}
