@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import Paciente
+from .models import CentroDeVacunacion, Paciente
 from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
@@ -47,6 +47,8 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 def userinfo_view(request):
+    centroElegido = CentroDeVacunacion.objects.get(user__id = request.user.id)
+    request.centro = centroElegido.nombre
     return render(request, 'userinfo.html')
 
 def vacunasAnteriores_view(request):
