@@ -47,10 +47,13 @@ def signup_view(request):
     return render(request, 'signup.html', {'form': form})
 
 def userinfo_view(request):
-    centroElegido = CentroDeVacunacion.objects.get(user__id = request.user.id)
-    request.centro = centroElegido.nombre
-    vacunas = VacunasAnteriores.objects.get(user__id = request.user.id)
-    request.vacunas = vacunas.__str__()
+    try:
+        centroElegido = CentroDeVacunacion.objects.get(user__id = request.user.id)
+        request.centro = centroElegido.nombre
+        vacunas = VacunasAnteriores.objects.get(user__id = request.user.id)
+        request.vacunas = vacunas.__str__()
+    except:
+        pass
     return render(request, 'userinfo.html')
 
 def vacunasAnteriores_view(request):
