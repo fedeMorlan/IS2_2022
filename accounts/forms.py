@@ -87,7 +87,7 @@ class ModificarDatosForm(ModelForm):
 
     class Meta:
         model = Paciente
-        fields = ( 'dni', 'first_name', 'edad', 'last_name', 'email')
+        fields = ( 'dni', 'first_name', 'last_name','edad', 'email')
 
 class ModificarDatosForm2(ModelForm):
     if User.is_authenticated:
