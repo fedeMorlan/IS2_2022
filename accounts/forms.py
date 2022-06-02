@@ -1,3 +1,4 @@
+from enum import unique
 from tkinter.tix import Form
 from urllib import request
 from urllib.request import Request
@@ -73,15 +74,27 @@ class ModificarDatosForm(ModelForm):
         last_name = forms.CharField(max_length=100, label='Apellido')
         email = forms.EmailField(max_length=150, label='Email')
         edad = forms.IntegerField(label='Edad', min_value=0, max_value=120, help_text='entre 0 y 120')
-        username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
-        # def clean_email(self):
-        #     email = self.cleaned_data.get('email')
-        #     if User.objects.filter(email=email).exists():
-        #         raise forms.ValidationError("Este email ya está registrado")
-        #     else: return email
+        #username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
+
+       #def clean_email(self):
+       #    email = self.cleaned_data.get('email')
+       #    if User.objects.filter(email=email).exists():
+       #        raise forms.ValidationError("Este email ya está registrado")
+       #    else: return email
+       
     else:
         pass
 
     class Meta:
         model = Paciente
-        fields = ('username', 'dni', 'first_name', 'edad', 'last_name', 'email')
+        fields = ( 'dni', 'first_name', 'edad', 'last_name', 'email')
+
+class ModificarDatosForm2(ModelForm):
+    if User.is_authenticated:
+        username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
+    else:
+        pass
+
+    class Meta:
+        model = User
+        fields = ('username',)

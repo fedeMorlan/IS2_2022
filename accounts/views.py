@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from .models import CentroDeVacunacion, Paciente, VacunasAnteriores
-from .forms import SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm
+from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -108,19 +108,23 @@ def modificarDatos_view(request):
     user_info = User.objects.get(id=user)
     if request.method == 'POST':
         form = ModificarDatosForm(request.POST, request.FILES, instance=paciente)
-        if form.is_valid():
+        form2 = ModificarDatosForm2(request.POST, request.FILES,instance = user_info)
+        if form.is_valid() and form2.is_valid():
             user_info.paciente.dni = form.cleaned_data.get('dni')
             user_info.paciente.email = form.cleaned_data.get('email')
             user_info.email = user_info.paciente.email
             user_info.paciente.first_name = form.cleaned_data.get('first_name')
             user_info.paciente.last_name = form.cleaned_data.get('last_name')
             user_info.paciente.edad = form.cleaned_data.get('edad')
-            user_info.username = form.cleaned_data.get('username')
+            user_info.username = form2.cleaned_data.get('username')
             paciente.save()
-            user_info.save()
-            messages.success(request, 'Tus datos se modificaron correctamente')
+            try:
+                user_info.save()
+            except:
+                pass
             return redirect('userinfo')
     else:
         form = ModificarDatosForm(instance=paciente)
+        form2 = ModificarDatosForm2(instance = user_info)
 
-    return render(request, 'modificar_datos.html', {'form': form})
+    return render(request, 'modificar_datos.html', {'form': form, 'form2':form2})
