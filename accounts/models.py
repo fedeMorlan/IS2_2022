@@ -13,6 +13,7 @@ class CentroDeVacunacion(models.Model):
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
 
+
 class Paciente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     dni = models.CharField(max_length=8, help_text='DNI')
@@ -20,9 +21,10 @@ class Paciente(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150)
     bio = models.TextField()
-    #centro_vacunacion = models.ForeignKey(CentroDeVacunacion, on_delete=models.DO_NOTHING)
-    #sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
-    #sexo = models.CharField(max_length=2, choices=sexos,default='NC')
+    edad = models.IntegerField(default=0)
+    # centro_vacunacion = models.ForeignKey(CentroDeVacunacion, on_delete=models.DO_NOTHING)
+    # sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
+    # sexo = models.CharField(max_length=2, choices=sexos,default='NC')
 
     # el password lo maneja otro api, por ahi esta bueno para que no figure el texto en la bd
 
@@ -36,11 +38,13 @@ class Vacuna(models.Model):
     # YYYY-MM-DD
     fecha_vencimiento = models.DateField
 
+
 class Vacunador(models.Model):
     nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     dni = models.CharField(max_length=8)
     email = models.EmailField(max_length=150)
     # password
+
 
 class Aplicacion(models.Model):
     # ya es primary key por ser AutoField
@@ -54,10 +58,10 @@ class Aplicacion(models.Model):
 
 class VacunasAnteriores(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    fiebre_amarilla = models.BooleanField(null = True)
-    gripe = models.BooleanField(null = True)
-    covid_1 = models.BooleanField(null = True)
-    covid_2 = models.BooleanField(null = True)
+    fiebre_amarilla = models.BooleanField(null=True)
+    gripe = models.BooleanField(null=True)
+    covid_1 = models.BooleanField(null=True)
+    covid_2 = models.BooleanField(null=True)
 
     def __str__(self):
         tupla = ()
@@ -66,6 +70,8 @@ class VacunasAnteriores(models.Model):
         if (self.covid_1): tupla += ("covid dosis 1",)
         if (self.covid_2): tupla += ("covid dosis 2",)
         vax = ", ".join(tupla)
+        if len(tupla) == 0:
+            vax = "No registra vacunas aplicadas"
         return vax
 
 
@@ -82,7 +88,7 @@ class Turno(models.Model):
     fecha = models.DateField
 
 
-#class TrabajaEn(models.Model):
+# class TrabajaEn(models.Model):
 #    id_trabaja_en = models.AutoField
 #    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
 #    #nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=models.CASCADE)

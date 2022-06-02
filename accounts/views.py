@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
+
 """
 class SignUpView(generic.CreateView):
     form_class = UserCreationForm
@@ -46,29 +47,32 @@ def signup_view(request):
     #    form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
 def userinfo_view(request):
     try:
-        centroElegido = CentroDeVacunacion.objects.get(user__id = request.user.id)
+        centroElegido = CentroDeVacunacion.objects.get(user__id=request.user.id)
         request.centro = centroElegido.nombre
-        vacunas = VacunasAnteriores.objects.get(user__id = request.user.id)
+        vacunas = VacunasAnteriores.objects.get(user__id=request.user.id)
         request.vacunas = vacunas.__str__()
     except:
         pass
     return render(request, 'userinfo.html')
 
-def vacunasAnteriores_view(request):
-   form = VacunasAnterioresForm(request.POST)
-   if form.is_valid():
-       vacun = form.save(commit = False)
-       vacun.fiebre_amarilla = form.cleaned_data.get('fiebre_amarilla')
-       vacun.gripe = form.cleaned_data.get('gripe')
-       vacun.covid_1 = form.cleaned_data.get('covid_1')
-       vacun.covid_2 = form.cleaned_data.get('covid_2')
-       vacun.user = request.user
-       vacun.save()
-       return redirect('userinfo')
 
-   return render(request, 'vacunas_anteriores.html', {'form' : form})
+def vacunasAnteriores_view(request):
+    form = VacunasAnterioresForm(request.POST)
+    if form.is_valid():
+        vacun = form.save(commit=False)
+        vacun.fiebre_amarilla = form.cleaned_data.get('fiebre_amarilla')
+        vacun.gripe = form.cleaned_data.get('gripe')
+        vacun.covid_1 = form.cleaned_data.get('covid_1')
+        vacun.covid_2 = form.cleaned_data.get('covid_2')
+        vacun.user = request.user
+        vacun.save()
+        return redirect('userinfo')
+
+    return render(request, 'vacunas_anteriores.html', {'form': form})
+
 
 def cambiarContraseña_view(request):
     if request.method == 'POST':
@@ -84,17 +88,19 @@ def cambiarContraseña_view(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'cambiar_contrasena.html', {'form': form})
 
+
 def elegirCentro_view(request):
     form = ElegirCentroForm(request.POST)
     if form.is_valid():
-        centro = form.save(commit = False)
+        centro = form.save(commit=False)
         centro.nombre = form.cleaned_data.get('nombre')
         centro.user = request.user
         centro.save()
         return redirect('userinfo')
 
-    return render(request, 'elegir_centro.html', {'form' : form})
-    
+    return render(request, 'elegir_centro.html', {'form': form})
+
+
 @login_required
 def modificarDatos_view(request):
     user = request.user.id
@@ -102,21 +108,19 @@ def modificarDatos_view(request):
     user_info = User.objects.get(id=user)
     if request.method == 'POST':
         form = ModificarDatosForm(request.POST, request.FILES, instance=paciente)
-        if form.is_valid():    
-            paciente.dni = form.cleaned_data.get('dni')
+        if form.is_valid():
+            user_info.paciente.dni = form.cleaned_data.get('dni')
             user_info.paciente.email = form.cleaned_data.get('email')
             user_info.email = user_info.paciente.email
             user_info.paciente.first_name = form.cleaned_data.get('first_name')
             user_info.paciente.last_name = form.cleaned_data.get('last_name')
+            user_info.paciente.edad = form.cleaned_data.get('edad')
+            user_info.username = form.cleaned_data.get('username')
             paciente.save()
             user_info.save()
             messages.success(request, 'Tus datos se modificaron correctamente')
             return redirect('userinfo')
     else:
         form = ModificarDatosForm(instance=paciente)
-    
-    return render(request, 'modificar_datos.html',{'form' : form})
 
-
-
-
+    return render(request, 'modificar_datos.html', {'form': form})

@@ -11,14 +11,13 @@ from django.forms import ModelForm
 from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion
 
 
-
 class SignUpForm(UserCreationForm):
     dni = forms.CharField(max_length=8, help_text='DNI sin puntos', label='DNI')
     first_name = forms.CharField(max_length=100, help_text='Nombre', label='Nombre')
     last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
     email = forms.EmailField(max_length=150, help_text='Email', label='Email')
     username = forms.CharField(max_length=150, help_text='Nombre de Usuario', label='Nombre de Usuario')
-
+    edad = forms.IntegerField(label='Edad', min_value=0, max_value=120)
     password1 = forms.CharField(
         label="Contraseña",
         strip=False,
@@ -31,8 +30,8 @@ class SignUpForm(UserCreationForm):
         strip=False,
         help_text="Ingresar la misma contraseña que antes, para verificación.",
     )
-    
-    #def clean_email(self):
+
+    # def clean_email(self):
     #    email = self.cleaned_data.get('email')
     #    if User.objects.filter(email=email).exists():
     #        raise forms.ValidationError("Este email ya está registrado")
@@ -40,41 +39,49 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'dni', 'first_name', 'last_name',
+        fields = ('username', 'dni', 'edad', 'first_name', 'last_name',
                   'email', 'password1', 'password2',)
+
 
 class VacunasAnterioresForm(ModelForm):
     opciones = [('True', 'Si'), ('False', 'No')]
-    fiebre_amarilla = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Fiebre Amarilla',
-        help_text="En los ultimos 10 años")
-    gripe = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Gripe ',
-         help_text="En los ultimos 12 meses")
-    covid_1 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 1')
-    covid_2 = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Covid - dosis 2')
+    fiebre_amarilla = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Fiebre Amarilla',
+                                        help_text="En los ultimos 10 años")
+    gripe = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Gripe ',
+                              help_text="En los ultimos 12 meses")
+    covid_1 = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Covid - dosis 1')
+    covid_2 = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Covid - dosis 2')
+
     class Meta:
         model = VacunasAnteriores
         fields = ('fiebre_amarilla', 'gripe', 'covid_1', 'covid_2')
 
+
 class ElegirCentroForm(ModelForm):
-    opciones = [('centro 1','Centro 1'),('centro 2','Centro 2'),('centro 3','Centro 3')]
-    nombre = forms.ChoiceField(widget = forms.RadioSelect, choices = opciones, label = 'Elegi tu centro')
+    opciones = [('Comedor Universitario', 'Comedor Universitario'), ('Hipodromo', 'Hipodromo'), ('Bosque', 'Bosque')]
+    nombre = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Elegi tu centro')
+
     class Meta:
         model = CentroDeVacunacion
         fields = ('nombre',)
 
+
 class ModificarDatosForm(ModelForm):
     if User.is_authenticated:
-           dni = forms.CharField(max_length=8, label='DNI')
-           first_name = forms.CharField(max_length=100, label='Nombre')
-           last_name = forms.CharField(max_length=100, label='Apellido')
-           email = forms.EmailField(max_length=150, label='Email')
-           #def clean_email(self):
-           #     email = self.cleaned_data.get('email')
-           #     if User.objects.filter(email=email).exists():
-           #         raise forms.ValidationError("Este email ya está registrado")
-           #     else: return email
+        dni = forms.CharField(max_length=8, label='DNI')
+        first_name = forms.CharField(max_length=100, label='Nombre')
+        last_name = forms.CharField(max_length=100, label='Apellido')
+        email = forms.EmailField(max_length=150, label='Email')
+        edad = forms.IntegerField(label='Edad', min_value=0, max_value=120, help_text='entre 0 y 120')
+        username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
+        # def clean_email(self):
+        #     email = self.cleaned_data.get('email')
+        #     if User.objects.filter(email=email).exists():
+        #         raise forms.ValidationError("Este email ya está registrado")
+        #     else: return email
     else:
         pass
+
     class Meta:
         model = Paciente
-        fields = ('dni', 'first_name', 'last_name', 'email')  
+        fields = ('username', 'dni', 'first_name', 'edad', 'last_name', 'email')
