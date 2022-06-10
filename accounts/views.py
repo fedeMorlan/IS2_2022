@@ -1,3 +1,5 @@
+from struct import pack
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
@@ -10,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from .models import CentroDeVacunacion, Paciente, VacunasAnteriores
-from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm
+from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, validarIdentidadRenaperForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -128,3 +130,23 @@ def modificarDatos_view(request):
         form2 = ModificarDatosForm2(instance = user_info)
 
     return render(request, 'modificar_datos.html', {'form': form, 'form2':form2})
+
+@login_required
+def validarIdentidadRenaper_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    user_info = User.objects.get(id=user)
+    form = validarIdentidadRenaperForm(request.POST, request.FILES)
+    if form.is_valid():
+        #frente = form.cleaned_data.get('frente')
+        #dorso = form.cleaned_data.get('dorso')
+        user_info.paciente.validado_renaper = 1
+        paciente.save()
+        try:
+            user_info.save()
+        except:
+            pass
+        messages.success(request, "Su identidad se validó correctamente")
+        return HttpResponseRedirect('/userinfo/') #redirect('userinfo')
+    
+    return render(request, 'validar_identidad.html', {'form': form})

@@ -1,4 +1,5 @@
 from enum import unique
+from tkinter import HIDDEN
 from tkinter.tix import Form
 from urllib import request
 from urllib.request import Request
@@ -98,3 +99,15 @@ class ModificarDatosForm2(ModelForm):
     class Meta:
         model = User
         fields = ('username',)
+
+class validarIdentidadRenaperForm(forms.Form):
+    if User.is_authenticated:
+        frente = forms.ImageField(required=True, help_text='Imagen del frente de su DNI')
+        dorso = forms.ImageField(required=True, help_text='Imagen del dorso de su DNI')
+        #validado_renaper = forms.BooleanField()
+    else: 
+        pass 
+
+   #class Meta:
+   #    model = Paciente
+   #    fields = ('validado_renaper',)

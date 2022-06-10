@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Validación de identidad RENAPER{% endblock %}
+
+{% block content %}
+  <h2>Valide su identidad con RENAPER</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+      </p>
+    {% endfor %}
+    <div class="buttonholder">
+      <button type="submit">validar</button>
+    </div>
+  </form>
+  <a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+{% endblock %}

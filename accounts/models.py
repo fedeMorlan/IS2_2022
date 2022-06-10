@@ -22,6 +22,7 @@ class Paciente(models.Model):
     email = models.EmailField(max_length=150)
     bio = models.TextField()
     edad = models.IntegerField(default=0)
+    validado_renaper = models.BooleanField(default=False)
     # centro_vacunacion = models.ForeignKey(CentroDeVacunacion, on_delete=models.DO_NOTHING)
     # sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     # sexo = models.CharField(max_length=2, choices=sexos,default='NC')
