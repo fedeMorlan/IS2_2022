@@ -136,17 +136,22 @@ def validarIdentidadRenaper_view(request):
     user = request.user.id
     paciente = Paciente.objects.get(user__id=user)
     user_info = User.objects.get(id=user)
-    form = validarIdentidadRenaperForm(request.POST, request.FILES)
-    if form.is_valid():
-        #frente = form.cleaned_data.get('frente')
-        #dorso = form.cleaned_data.get('dorso')
-        user_info.paciente.validado_renaper = 1
-        paciente.save()
-        try:
-            user_info.save()
-        except:
-            pass
-        messages.success(request, "Su identidad se validó correctamente")
-        return HttpResponseRedirect('/userinfo/') #redirect('userinfo')
-    
+    if (user_info.paciente.validado_renaper == True):
+        return render(request, 'validado.html')
+    else:
+        if request.method == 'POST':
+            form = validarIdentidadRenaperForm(request.POST, request.FILES, instance=paciente)
+            if form.is_valid():
+                #frente = form.cleaned_data.get('frente')
+                #dorso = form.cleaned_data.get('dorso')
+                user_info.paciente.validado_renaper = True
+                paciente.save()
+                try:
+                    user_info.save()
+                except:
+                    pass
+
+                return render(request, 'validado.html')
+        else:
+            form = validarIdentidadRenaperForm(instance=paciente)
     return render(request, 'validar_identidad.html', {'form': form})

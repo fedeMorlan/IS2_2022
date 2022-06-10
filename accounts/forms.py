@@ -75,20 +75,21 @@ class ModificarDatosForm(ModelForm):
         last_name = forms.CharField(max_length=100, label='Apellido')
         email = forms.EmailField(max_length=150, label='Email')
         edad = forms.IntegerField(label='Edad', min_value=0, max_value=120, help_text='entre 0 y 120')
-        #username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
+        # username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
 
-       #def clean_email(self):
-       #    email = self.cleaned_data.get('email')
-       #    if User.objects.filter(email=email).exists():
-       #        raise forms.ValidationError("Este email ya está registrado")
-       #    else: return email
-       
+    # def clean_email(self):
+    #    email = self.cleaned_data.get('email')
+    #    if User.objects.filter(email=email).exists():
+    #        raise forms.ValidationError("Este email ya está registrado")
+    #    else: return email
+
     else:
         pass
 
     class Meta:
         model = Paciente
-        fields = ( 'dni', 'first_name', 'last_name','edad', 'email')
+        fields = ('dni', 'first_name', 'last_name', 'edad', 'email')
+
 
 class ModificarDatosForm2(ModelForm):
     if User.is_authenticated:
@@ -100,14 +101,15 @@ class ModificarDatosForm2(ModelForm):
         model = User
         fields = ('username',)
 
-class validarIdentidadRenaperForm(forms.Form):
-    if User.is_authenticated:
-        frente = forms.ImageField(required=True, help_text='Imagen del frente de su DNI')
-        dorso = forms.ImageField(required=True, help_text='Imagen del dorso de su DNI')
-        #validado_renaper = forms.BooleanField()
-    else: 
-        pass 
 
-   #class Meta:
-   #    model = Paciente
-   #    fields = ('validado_renaper',)
+class validarIdentidadRenaperForm(ModelForm):
+    if User.is_authenticated:
+        frente = forms.ImageField(help_text='Imagen del frente de su DNI')
+        dorso = forms.ImageField(help_text='Imagen del dorso de su DNI')
+        # validado_renaper = forms.BooleanField()
+    else:
+        pass
+
+    class Meta:
+        model = Paciente
+        fields = ()

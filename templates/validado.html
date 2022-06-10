@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Validado{% endblock %}
+
+{% block content %}
+<h1>Usuario ya validado</h1>
+<p>
+Este usuario ya se encuentra validado a través del sistema de RENAPER   
+</p>
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+
+
+{% endblock content %}
