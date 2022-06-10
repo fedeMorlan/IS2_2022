@@ -12,7 +12,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from .models import CentroDeVacunacion, Paciente, VacunasAnteriores
-from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, validarIdentidadRenaperForm
+from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, \
+    validarIdentidadRenaperForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -52,8 +53,6 @@ def signup_view(request):
 
 def userinfo_view(request):
     try:
-        centroElegido = CentroDeVacunacion.objects.get(user__id=request.user.id)
-        request.centro = centroElegido.nombre
         vacunas = VacunasAnteriores.objects.get(user__id=request.user.id)
         request.vacunas = vacunas.__str__()
     except:
@@ -92,13 +91,22 @@ def cambiarContraseña_view(request):
 
 
 def elegirCentro_view(request):
-    form = ElegirCentroForm(request.POST)
-    if form.is_valid():
-        centro = form.save(commit=False)
-        centro.nombre = form.cleaned_data.get('nombre')
-        centro.user = request.user
-        centro.save()
-        return redirect('userinfo')
+
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    user_info = User.objects.get(id=user)
+    if request.method == 'POST':
+        form = ElegirCentroForm(request.POST, instance=paciente)
+        if form.is_valid():
+            user_info.paciente.centro_vacunacion = form.cleaned_data.get('nombre')
+            paciente.save()
+            try:
+                user_info.save()
+            except:
+                pass
+            return redirect('userinfo')
+    else:
+        form = ElegirCentroForm(instance=paciente)
 
     return render(request, 'elegir_centro.html', {'form': form})
 
@@ -110,7 +118,7 @@ def modificarDatos_view(request):
     user_info = User.objects.get(id=user)
     if request.method == 'POST':
         form = ModificarDatosForm(request.POST, request.FILES, instance=paciente)
-        form2 = ModificarDatosForm2(request.POST, request.FILES,instance = user_info)
+        form2 = ModificarDatosForm2(request.POST, request.FILES, instance=user_info)
         if form.is_valid() and form2.is_valid():
             user_info.paciente.dni = form.cleaned_data.get('dni')
             user_info.paciente.email = form.cleaned_data.get('email')
@@ -127,23 +135,24 @@ def modificarDatos_view(request):
             return redirect('userinfo')
     else:
         form = ModificarDatosForm(instance=paciente)
-        form2 = ModificarDatosForm2(instance = user_info)
+        form2 = ModificarDatosForm2(instance=user_info)
 
-    return render(request, 'modificar_datos.html', {'form': form, 'form2':form2})
+    return render(request, 'modificar_datos.html', {'form': form, 'form2': form2})
+
 
 @login_required
 def validarIdentidadRenaper_view(request):
     user = request.user.id
     paciente = Paciente.objects.get(user__id=user)
     user_info = User.objects.get(id=user)
-    if (user_info.paciente.validado_renaper == True):
+    if user_info.paciente.validado_renaper:
         return render(request, 'validado.html')
     else:
         if request.method == 'POST':
             form = validarIdentidadRenaperForm(request.POST, request.FILES, instance=paciente)
             if form.is_valid():
-                #frente = form.cleaned_data.get('frente')
-                #dorso = form.cleaned_data.get('dorso')
+                # frente = form.cleaned_data.get('frente')
+                # dorso = form.cleaned_data.get('dorso')
                 user_info.paciente.validado_renaper = True
                 paciente.save()
                 try:
@@ -155,3 +164,13 @@ def validarIdentidadRenaper_view(request):
         else:
             form = validarIdentidadRenaperForm(instance=paciente)
     return render(request, 'validar_identidad.html', {'form': form})
+
+
+@login_required
+def solicitarTurno_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    user_info = User.objects.get(id=user)
+    if not user_info.paciente.validado_renaper:
+        return render(request, 'no_validado.html')
+    #if user_info.paciente.

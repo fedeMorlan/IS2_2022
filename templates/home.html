@@ -8,7 +8,9 @@
 
 {% if user.is_authenticated %}
   Bienvenido {{ user.username }}!
+  <p><a class="pedirturno" href="{% url 'Solicitar turno' %}">Solicitar turno</a></p>
   <p><a class="linkBoton" href="{% url 'logout' %}">Cerrar Sesion</a></p>
+  
 {% else %}
   <p>Debes iniciar sesion para continuar</p>
   <ul>

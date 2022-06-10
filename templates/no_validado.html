@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}No validado{% endblock %}
+
+{% block content %}
+<h1>Usuario no validado</h1>
+<p>
+Para solicitar un turno, es necesario que el usuario se valide a traves del RENAPER. 
+</p>
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+
+
+{% endblock content %}

@@ -2,12 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4a714485-edba-413f-906e-05d4edfb50b3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0002_aplicacion_centrodevacunacion_dueno_paciente_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0003_remove_vacunasanteriores_nombre_vacuna.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0004_vacunasanteriores_user.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0005_vacunasanteriores_covid_1_vacunasanteriores_covid_2_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0006_alter_paciente_email.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0007_aplicacion_id_paciente_aplicacion_id_vacunador_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0008_alter_paciente_email.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0008_paciente_centro_vacunacion_paciente_sexo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0009_remove_paciente_sexo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0010_paciente_sexo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0011_alter_paciente_email.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0012_merge_20220521_1427.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0013_remove_paciente_centro_vacunacion_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0014_remove_vacunasanteriores_id_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0015_remove_paciente_email.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0016_paciente_email.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0017_paciente_edad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0018_turno_centro.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0019_alter_turno_centro.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0020_alter_turno_centro.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0021_alter_turno_centro.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0022_paciente_validado_renaper.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accounts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/validar_identidad.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/validar_identidad.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/userinfo.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/userinfo.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

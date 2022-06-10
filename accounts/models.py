@@ -9,9 +9,11 @@ from django.db.models.deletion import *
 # tal como se indica en https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
 
 class CentroDeVacunacion(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, primary_key=True)
     direccion = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Paciente(models.Model):
@@ -23,7 +25,9 @@ class Paciente(models.Model):
     bio = models.TextField()
     edad = models.IntegerField(default=0)
     validado_renaper = models.BooleanField(default=False)
-    # centro_vacunacion = models.ForeignKey(CentroDeVacunacion, on_delete=models.DO_NOTHING)
+
+    centro_vacunacion = models.ForeignKey(CentroDeVacunacion, default='Bosque', on_delete=models.CASCADE)
+
     # sexos=[('F','Femenino'),('M','Masculino'),('NB','No Binario'),('NC','No Contesta')]
     # sexo = models.CharField(max_length=2, choices=sexos,default='NC')
 
@@ -66,31 +70,45 @@ class VacunasAnteriores(models.Model):
 
     def __str__(self):
         tupla = ()
-        if (self.fiebre_amarilla): tupla += ("fiebre amarilla",)
-        if (self.gripe): tupla += ("gripe",)
-        if (self.covid_1): tupla += ("covid dosis 1",)
-        if (self.covid_2): tupla += ("covid dosis 2",)
+        if self.fiebre_amarilla: tupla += ("fiebre amarilla",)
+        if self.gripe: tupla += ("gripe",)
+        if self.covid_1: tupla += ("covid dosis 1",)
+        if self.covid_2: tupla += ("covid dosis 2",)
         vax = ", ".join(tupla)
         if len(tupla) == 0:
             vax = "No registra vacunas aplicadas"
         return vax
 
 
-class Pacientevacunas(models.Model):
-    id_pacientevacunas = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
-    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
+#class Pacientevacunas(models.Model):
+#    id_pacientevacunas = models.AutoField
+#    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
+#    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
+
+
+class TurnoSlot(models.Model):
+    slotID = models.AutoField
+    fechayhora = models.DateTimeField()
+    cupo = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.fechayhora)
 
 
 class Turno(models.Model):
-    id_turno = models.AutoField
-    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
-    centro = models.ForeignKey(CentroDeVacunacion,null=False,on_delete=models.CASCADE, default=1)
-    hora = models.TimeField
-    fecha = models.DateField
+    id_turno = models.AutoField(primary_key=True)
+    paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
+    centro = models.ForeignKey(CentroDeVacunacion, null=False, on_delete=models.CASCADE, default='Bosque')
+    vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
+    turnoSlotID = models.ForeignKey(TurnoSlot, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.turnoSlotID) + " - " + str(self.paciente)
 
 
 # class TrabajaEn(models.Model):
+
+
 #    id_trabaja_en = models.AutoField
 #    nombreusuario = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
 #    #nombrecentro = models.ForeignKey(CentroDeVacunacion, null=False, blank=False, on_delete=models.CASCADE)

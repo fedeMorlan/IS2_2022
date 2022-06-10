@@ -60,12 +60,15 @@ class VacunasAnterioresForm(ModelForm):
 
 
 class ElegirCentroForm(ModelForm):
-    opciones = [('Comedor Universitario', 'Comedor Universitario'), ('Hipodromo', 'Hipodromo'), ('Bosque', 'Bosque')]
-    nombre = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Elegi tu centro')
+
+    #opciones = [(CentroDeVacunacion.objects.get(pk='Bosque'), 'Bosque'),
+    #            (CentroDeVacunacion.objects.get(pk='Comedor Universitario'), 'Comedor Universitario'),
+    #            (CentroDeVacunacion.objects.get(pk='Hipodromo'), 'Hipodromo')]
+    #nombre = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Elegi tu centro')
 
     class Meta:
-        model = CentroDeVacunacion
-        fields = ('nombre',)
+        model = Paciente
+        fields = ('centro_vacunacion',)
 
 
 class ModificarDatosForm(ModelForm):

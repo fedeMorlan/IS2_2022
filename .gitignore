@@ -3,3 +3,4 @@ sent_emails/
 .vs
 .idea
 .vscode
+accounts/migrations

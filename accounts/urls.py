@@ -14,5 +14,5 @@ urlpatterns = [
     path('elegir_centro/', elegirCentro_view, name='Elegir centro de vacunacion'),
     path('modificar_datos/', modificarDatos_view, name='Modificar datos personales'),
     path('validar_identidad/', validarIdentidadRenaper_view, name='Validar identidad con RENAPER'),
-
+    path('solicitar_turno/', solicitarTurno_view, name='Solicitar turno')
 ]
