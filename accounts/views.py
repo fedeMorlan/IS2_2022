@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import CentroDeVacunacion, Paciente, VacunasAnteriores
+from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion
 from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, \
     validarIdentidadRenaperForm
 from django.contrib.auth.models import User
@@ -91,7 +91,6 @@ def cambiarContraseña_view(request):
 
 
 def elegirCentro_view(request):
-
     user = request.user.id
     paciente = Paciente.objects.get(user__id=user)
     user_info = User.objects.get(id=user)
@@ -109,6 +108,11 @@ def elegirCentro_view(request):
         form = ElegirCentroForm(instance=paciente)
 
     return render(request, 'elegir_centro.html', {'form': form})
+
+
+def verVacunasAplicadas_view(request):
+    request.data = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna')
+    return render(request, 'vacunas_aplicadas.html')
 
 
 @login_required
@@ -173,4 +177,4 @@ def solicitarTurno_view(request):
     user_info = User.objects.get(id=user)
     if not user_info.paciente.validado_renaper:
         return render(request, 'no_validado.html')
-    #if user_info.paciente.
+    # if user_info.paciente.

@@ -1,0 +1,11 @@
+{% block content %}
+<h1>Vacunas</h1>
+    {% csrf_token %}
+    {% for field in request.data %}
+        <p>
+        {{ field | cut:"'" | cut:"(" | cut:")" | cut:","}}
+        </p>
+    {% endfor %}
+    </form>
+
+{% endblock content %}
