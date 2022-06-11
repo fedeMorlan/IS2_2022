@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SIMPLE_AUTOCOMPLETE = {'auth_paciente': {'search_field': 'username'}}
 
 # Application definition
 
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',  # new
     'accounts',   # new
+    'dal',
+    'dal_select2',
+    #'grappelli',
 ]
 
 MIDDLEWARE = [

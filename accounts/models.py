@@ -56,6 +56,7 @@ class Aplicacion(models.Model):
     id_aplicacion = models.AutoField
     nombrevacuna = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
     fecha_de_aplicacion = models.DateField
+    numero_de_lote = models.IntegerField
     # no estoy seguro de como funciona el ForeignKey
     id_paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     id_vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)

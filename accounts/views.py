@@ -13,11 +13,12 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion
 from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, \
-    validarIdentidadRenaperForm
+    validarIdentidadRenaperForm, registrarAplicacionForm
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
+from dal import autocomplete
 
 """
 class SignUpView(generic.CreateView):
@@ -178,3 +179,30 @@ def solicitarTurno_view(request):
     if not user_info.paciente.validado_renaper:
         return render(request, 'no_validado.html')
     # if user_info.paciente.
+
+class PacienteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        if not self.request.user.is_authenticated:
+            return Paciente.objects.none()
+
+        qs = Paciente.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+def registrarAplicacion_view(request):
+    form = registrarAplicacionForm(request.POST)
+    #if request.method == 'POST':
+    if form.is_valid():
+        aplicacion = form.save(commit=False)
+        aplicacion.nombrevacuna = form.cleaned_data.get('nombrevacuna')
+        aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fehca_de_aplicacion')
+        aplicacion.numero_de_lote = form.cleaned_data.get('numero_de_lote')
+        aplicacion.id_paciente = form.cleaned_data.get('id_paciente')
+        aplicacion.id_vacunador = request.user.id
+        aplicacion.save()
+
+    return render(request, 'registrar_aplicacion.html', {'form': form})

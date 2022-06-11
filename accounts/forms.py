@@ -10,7 +10,8 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion
+from accounts.models import Paciente, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
+from dal import autocomplete
 
 
 class SignUpForm(UserCreationForm):
@@ -116,3 +117,17 @@ class validarIdentidadRenaperForm(ModelForm):
     class Meta:
         model = Paciente
         fields = ()
+
+class registrarAplicacionForm(ModelForm):
+    nombrevacuna = forms.ModelChoiceField(label = 'Nombre de la vacuna', queryset=
+        Vacuna.objects.all())
+    fecha_de_aplicacion = forms.DateField(label= 'Fecha de la aplicación', widget=forms.widgets.DateInput(
+        attrs={'type': 'date'}
+    ))
+    numero_de_lote = forms.IntegerField(label = 'Lote')
+    id_paciente = forms.ModelChoiceField(label = 'usuario del paciente', queryset=
+        Paciente.objects.all())
+        #widget=autocomplete.ModelSelect2(url='paciente-autocomplete'))
+    class Meta:
+        model = Aplicacion
+        fields = ('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote', 'id_paciente')

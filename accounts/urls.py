@@ -3,7 +3,7 @@ from django.urls import path
 
 # from .views import SignUpView
 from .views import *
-from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view
+from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view, PacienteAutocomplete
 
 urlpatterns = [
     # path("signup/", SignUpView.as_view(), name="signup"),
@@ -15,5 +15,7 @@ urlpatterns = [
     path('modificar_datos/', modificarDatos_view, name='Modificar datos personales'),
     path('validar_identidad/', validarIdentidadRenaper_view, name='Validar identidad con RENAPER'),
     path('solicitar_turno/', solicitarTurno_view, name='Solicitar turno'),
-    path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas')
+    path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas'),
+    path('registrar_aplicacion/', registrarAplicacion_view, name='Registrar aplicacion de vacuna'),
+    path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
 ]
