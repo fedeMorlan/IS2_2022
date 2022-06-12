@@ -26,6 +26,7 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 import os
+from accounts.models import Vacunador
 
 
 """
@@ -448,10 +449,13 @@ def registrarAplicacion_view(request):
         aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fehca_de_aplicacion')
         aplicacion.numero_de_lote = form.cleaned_data.get('numero_de_lote')
         aplicacion.id_paciente = form.cleaned_data.get('id_paciente')
-        aplicacion.id_vacunador = request.user.id
+        # aplicacion.id_vacunador = request.user.id
+        aplicacion.id_vacunador = Vacunador.objects.get(pk=1)
         aplicacion.save()
+        return render(request, 'aplicacion_ok.html')
 
     return render(request, 'registrar_aplicacion.html', {'form': form})
+
 
 def obtenerCertificado_view(request):
     user = request.user.id
@@ -486,4 +490,9 @@ def generarPDF_view(request):
     pdf.showPage()
     pdf.save()
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename="certificado.pdf")    
+    return FileResponse(buffer, as_attachment=True, filename="certificado.pdf")
+
+
+def homeVacunador_view(request):
+    return render(request, 'home_vac.html')
+

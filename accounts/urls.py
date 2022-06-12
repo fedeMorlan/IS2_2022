@@ -22,5 +22,7 @@ urlpatterns = [
     path('cancelar_turno/', cancelarTurno_view, name='cancelar turno'),
     path('modificar_turno/', modificarTurno_view, name='modificar turno'),
     path('certificado/', obtenerCertificado_view, name='obtener certificado'),
+    path('home_vacunador/', homeVacunador_view, name='home vacunador'),
+
 ]
 
