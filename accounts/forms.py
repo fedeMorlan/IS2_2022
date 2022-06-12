@@ -3,6 +3,7 @@ from tkinter import HIDDEN
 from tkinter.tix import Form
 from urllib import request
 from urllib.request import Request
+import datetime
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import (
@@ -60,7 +61,8 @@ class SignUpForm2(ModelForm):
         model = Paciente
         fields = ('nacimiento', 'comorbilidad',)
         widgets = {
-            'nacimiento': forms.DateInput(attrs={'type': 'date', 'min': '1920-01-01', 'max': '2022-06-13'})
+            'nacimiento': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date', 'min': '1920-01-01',
+                                                                      'max': '2022-06-13', 'value': '2000-01-25'})
         }
 
 
@@ -95,7 +97,7 @@ class ModificarDatosForm(ModelForm):
         first_name = forms.CharField(max_length=100, label='Nombre')
         last_name = forms.CharField(max_length=100, label='Apellido')
         email = forms.EmailField(max_length=150, label='Email')
-        nacimiento = forms.DateInput()
+        #nacimiento = forms.DateInput()
         opciones = [('True', 'Si'), ('False', 'No')]
         comorbilidad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Comorbilidades')
         # username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
@@ -109,11 +111,13 @@ class ModificarDatosForm(ModelForm):
     else:
         pass
 
-    class Meta:
+
+    class Meta():
         model = Paciente
         fields = ('dni', 'first_name', 'last_name', 'nacimiento', 'email', 'comorbilidad')
         widgets = {
-            'nacimiento': forms.DateInput(attrs={'type': 'date', 'min': '1920-01-01', 'max': '2022-06-13'})
+            'nacimiento': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date', 'min': '1920-01-01',
+                                                                      'max': '2022-06-13',})
         }
 
 
