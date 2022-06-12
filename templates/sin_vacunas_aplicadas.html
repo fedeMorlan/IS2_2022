@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}No validado{% endblock %}
+
+{% block content %}
+<h1>No tiene vacunas aplicadas</h1>
+<p>
+No hay certificado disponible 
+</p>
+<a href="../solicitar_turno/"><button>Solicitar Truno</button></a>
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+
+
+{% endblock content %}
