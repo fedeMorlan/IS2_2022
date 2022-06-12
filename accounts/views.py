@@ -11,14 +11,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-<<<<<<< HEAD
-from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion
-from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, \
-    validarIdentidadRenaperForm, registrarAplicacionForm
-=======
 from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion, TurnoSlot, Turno, HoraTurno
 from .forms import *
->>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -240,36 +234,7 @@ def solicitarTurno_view(request):
     # si no esta validado en renaper
     if not user_info.paciente.validado_renaper:
         return render(request, 'no_validado.html')
-<<<<<<< HEAD
     # if user_info.paciente.
-
-class PacienteAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-
-        if not self.request.user.is_authenticated:
-            return Paciente.objects.none()
-
-        qs = Paciente.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-
-        return qs
-
-def registrarAplicacion_view(request):
-    form = registrarAplicacionForm(request.POST)
-    #if request.method == 'POST':
-    if form.is_valid():
-        aplicacion = form.save(commit=False)
-        aplicacion.nombrevacuna = form.cleaned_data.get('nombrevacuna')
-        aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fehca_de_aplicacion')
-        aplicacion.numero_de_lote = form.cleaned_data.get('numero_de_lote')
-        aplicacion.id_paciente = form.cleaned_data.get('id_paciente')
-        aplicacion.id_vacunador = request.user.id
-        aplicacion.save()
-
-    return render(request, 'registrar_aplicacion.html', {'form': form})
-=======
 
     # si no tiene vacunas previas cargadas en el sistema
     if not VacunasAnteriores.objects.filter(pk=user).exists():
@@ -451,4 +416,31 @@ def modificarTurno_view(request):
 
     # FALTA: enviar mail de turno
     return render(request, 'modificar_turno.html', {'form': form, 'form2': form2})
->>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d
+
+class PacienteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        if not self.request.user.is_authenticated:
+            return Paciente.objects.none()
+
+        qs = Paciente.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+def registrarAplicacion_view(request):
+    form = registrarAplicacionForm(request.POST)
+    #if request.method == 'POST':
+    if form.is_valid():
+        aplicacion = form.save(commit=False)
+        aplicacion.nombrevacuna = form.cleaned_data.get('nombrevacuna')
+        aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fehca_de_aplicacion')
+        aplicacion.numero_de_lote = form.cleaned_data.get('numero_de_lote')
+        aplicacion.id_paciente = form.cleaned_data.get('id_paciente')
+        aplicacion.id_vacunador = request.user.id
+        aplicacion.save()
+
+    return render(request, 'registrar_aplicacion.html', {'form': form})
+

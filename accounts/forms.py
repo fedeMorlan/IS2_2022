@@ -10,18 +10,14 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-<<<<<<< HEAD
-from accounts.models import Paciente, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 from dal import autocomplete
-=======
-from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno
+from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 
 
 class DateInput(forms.DateInput):
     input_type = 'date'
     input_min = '2020-01-01'
     input_max = '2021-01-01'
->>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d
 
 
 class SignUpForm(UserCreationForm):
@@ -144,7 +140,6 @@ class validarIdentidadRenaperForm(ModelForm):
         model = Paciente
         fields = ()
 
-<<<<<<< HEAD
 class registrarAplicacionForm(ModelForm):
     nombrevacuna = forms.ModelChoiceField(label = 'Nombre de la vacuna', queryset=
         Vacuna.objects.all())
@@ -158,7 +153,6 @@ class registrarAplicacionForm(ModelForm):
     class Meta:
         model = Aplicacion
         fields = ('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote', 'id_paciente')
-=======
 
 class SolicitarTurnoForm(ModelForm):
     fecha = forms.DateInput()
@@ -184,4 +178,3 @@ class CancelarTurnoForm(ModelForm):
     class Meta:
         model = Turno
         fields = ()
->>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d

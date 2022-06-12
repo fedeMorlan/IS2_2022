@@ -1,0 +1,26 @@
+[
+    {
+        "model" : "accounts.vacuna" ,
+        "fields": {
+            "nombrevacuna":"COVID 1"
+        }
+    },
+    {
+        "model" : "accounts.vacuna" ,
+        "fields": {
+            "nombrevacuna": "COVID 2"
+        }
+    },
+    {
+        "model" : "accounts.vacuna" ,
+        "fields": {
+            "nombrevacuna": "gripe"
+        }
+    },
+    {
+        "model" : "accounts.vacuna" ,
+        "fields": {
+            "nombrevacuna": "fiebre amarilla"
+        }
+    }
+]
