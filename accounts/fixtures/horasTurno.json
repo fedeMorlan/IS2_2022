@@ -1,0 +1,254 @@
+[
+    {
+        "pk" : 1,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"8:00"
+        }
+    },
+    {
+        "pk" : 2,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"8:15"
+        }
+    },
+    {
+        "pk" : 3,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"8:30"
+        }
+    },
+    {
+        "pk" : 4,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"8:45"
+        }
+    },
+    {
+        "pk" : 5,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"9:00"
+        }
+    },
+    {
+        "pk" : 6,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"9:15"
+        }
+    },
+    {
+        "pk" : 7,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"9:30"
+        }
+    },
+    {
+        "pk" : 8,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"9:45"
+        }
+    },
+    {
+        "pk" : 9,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"10:00"
+        }
+    },
+    {
+        "pk" : 10,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"10:15"
+        }
+    },
+    {
+        "pk" : 11,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"10:30"
+        }
+    },
+    {
+        "pk" : 12,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"10:45"
+        }
+    },
+    {
+        "pk" : 13,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"11:00"
+        }
+    },
+    {
+        "pk" : 14,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"11:15"
+        }
+    },
+    {
+        "pk" : 15,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"11:30"
+        }
+    },
+    {
+        "pk" : 16,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"11:45"
+        }
+    },
+    {
+        "pk" : 17,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"12:00"
+        }
+    },
+    {
+        "pk" : 18,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"12:15"
+        }
+    },
+    {
+        "pk" : 19,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"12:30"
+        }
+    },
+    {
+        "pk" : 20,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"12:45"
+        }
+    },
+    {
+        "pk" : 21,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"13:00"
+        }
+    },
+    {
+        "pk" : 22,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"13:15"
+        }
+    },
+    {
+        "pk" : 23,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"13:30"
+        }
+    },
+    {
+        "pk" : 24,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"13:45"
+        }
+    },
+    {
+        "pk" : 25,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"14:00"
+        }
+    },
+    {
+        "pk" : 26,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"14:15"
+        }
+    },
+    {
+        "pk" : 27,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"14:30"
+        }
+    },
+    {
+        "pk" : 28,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"14:45"
+        }
+    },
+    {
+        "pk" : 29,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"15:00"
+        }
+    },
+    {
+        "pk" : 30,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"15:15"
+        }
+    },
+    {
+        "pk" : 31,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"15:30"
+        }
+    },
+    {
+        "pk" : 32,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"15:45"
+        }
+    },
+    {
+        "pk" : 33,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"16:00"
+        }
+    },
+    {
+        "pk" : 34,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"16:15"
+        }
+    },
+    {
+        "pk" : 35,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"16:30"
+        }
+    },
+    {
+        "pk" : 36,
+        "model" : "accounts.horaturno",
+        "fields": {
+            "hora":"16:45"
+        }
+    }
+]

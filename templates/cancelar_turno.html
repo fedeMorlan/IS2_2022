@@ -1,0 +1,33 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Cancelar turno{% endblock %}
+
+{% block content %}
+<h1>Cancelar turno</h1>
+{% if turnoActual %}
+  <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <p>
+          {{ field.label_tag }}<br>
+          {{ field }}
+          {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <p style="color: rgb(255, 0, 0); font-size: .8em;" >{{ error }}</p>
+          {% endfor %}
+        </p>
+      {% endfor %}
+      <p><b>Atención:</b> ¿Realmente se desea cancelar el turno? Es una acción irreversible </p>
+      <div class="buttonholder">
+          <button type="submit">Si, cancelar</button>
+      </div>
+  </form>
+{% else %}
+  <p>Actualmente no tienes ningun turno pendiente que cancelar.</p>
+{% endif %}
+<a href="{% url 'userinfo' %}"><button class="volver" type="button">No, volver</button></a>
+
+{% endblock content %}

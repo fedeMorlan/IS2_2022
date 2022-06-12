@@ -23,7 +23,8 @@ class Paciente(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=150)
     bio = models.TextField()
-    edad = models.IntegerField(default=0)
+    nacimiento = models.DateField(blank=True, null=True)
+    comorbilidad = models.BooleanField(default=False)
     validado_renaper = models.BooleanField(default=False)
 
     centro_vacunacion = models.ForeignKey(CentroDeVacunacion, default='Bosque', on_delete=models.CASCADE)
@@ -36,16 +37,18 @@ class Paciente(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_nombrecompleto(self):
+        return "Nombre: " + str(self.first_name) + ", Apellido: " + str(self.last_name)
+
 
 class Vacuna(models.Model):
     nombrevacuna = models.CharField(max_length=100, primary_key=True)
-    numero_de_lote = models.IntegerField
     # YYYY-MM-DD
-    fecha_vencimiento = models.DateField
+    # fecha_vencimiento = models.DateField
 
 
 class Vacunador(models.Model):
-    nombreusuario = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     dni = models.CharField(max_length=8)
     email = models.EmailField(max_length=150)
     # password
@@ -81,30 +84,39 @@ class VacunasAnteriores(models.Model):
         return vax
 
 
-#class Pacientevacunas(models.Model):
+# class Pacientevacunas(models.Model):
 #    id_pacientevacunas = models.AutoField
 #    nombreusuario = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
 #    nombre_vacuna = models.ForeignKey(Vacuna, null=False, blank=False, on_delete=models.CASCADE)
 
+class HoraTurno(models.Model):
+    horaturnoID = models.AutoField(primary_key=True)
+    hora = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.hora
+
 
 class TurnoSlot(models.Model):
-    slotID = models.AutoField
-    fechayhora = models.DateTimeField()
+    slotID = models.AutoField(primary_key=True)
+    fecha = models.DateField()
+    horaID = models.ForeignKey(HoraTurno, on_delete=models.CASCADE)
     cupo = models.IntegerField(default=0)
 
     def __str__(self):
-        return str(self.fechayhora)
+        return str(self.fecha)
 
 
 class Turno(models.Model):
     id_turno = models.AutoField(primary_key=True)
     paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     centro = models.ForeignKey(CentroDeVacunacion, null=False, on_delete=models.CASCADE, default='Bosque')
-    vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)
     turnoSlotID = models.ForeignKey(TurnoSlot, on_delete=models.CASCADE)
+    horaturnoID = models.ForeignKey(HoraTurno, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.turnoSlotID) + " - " + str(self.paciente)
+        return str(self.turnoSlotID) + " - Hora: " + str(self.horaturnoID) + " - " \
+               + self.paciente.get_nombrecompleto() + " - Centro: " + str(self.centro)
 
 
 # class TrabajaEn(models.Model):

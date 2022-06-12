@@ -16,6 +16,13 @@ urlpatterns = [
     path('validar_identidad/', validarIdentidadRenaper_view, name='Validar identidad con RENAPER'),
     path('solicitar_turno/', solicitarTurno_view, name='Solicitar turno'),
     path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas'),
+<<<<<<< HEAD
     path('registrar_aplicacion/', registrarAplicacion_view, name='Registrar aplicacion de vacuna'),
     path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
+=======
+    path('turno_pendiente/', turnoPendiente_view, name='turno pendiente'),
+    path('cancelar_turno/', cancelarTurno_view, name='cancelar turno'),
+    path('modificar_turno/', modificarTurno_view, name='modificar turno'),
+>>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d
 ]
+

@@ -1,0 +1,23 @@
+[
+    {
+        "model" : "accounts.centrodevacunacion",
+        "fields": {
+            "nombre":"Bosque",
+            "direccion":"direccion del centro del bosque"
+        }
+    },
+    {
+        "model" : "accounts.centrodevacunacion",
+        "fields": {
+            "nombre":"Hipódromo",
+            "direccion":"direccion del hipodromo"
+        }
+    },
+    {
+        "model" : "accounts.centrodevacunacion",
+        "fields":{
+            "nombre":"Comedor Universitario",
+            "direccion":"direccion del comedor"
+        }
+    }
+]

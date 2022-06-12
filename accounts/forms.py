@@ -10,8 +10,18 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
+<<<<<<< HEAD
 from accounts.models import Paciente, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 from dal import autocomplete
+=======
+from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+    input_min = '2020-01-01'
+    input_max = '2021-01-01'
+>>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d
 
 
 class SignUpForm(UserCreationForm):
@@ -20,7 +30,6 @@ class SignUpForm(UserCreationForm):
     last_name = forms.CharField(max_length=100, help_text='Apellido', label='Apellido')
     email = forms.EmailField(max_length=150, help_text='Email', label='Email')
     username = forms.CharField(max_length=150, help_text='Nombre de Usuario', label='Nombre de Usuario')
-    edad = forms.IntegerField(label='Edad', min_value=0, max_value=120)
     password1 = forms.CharField(
         label="Contraseña",
         strip=False,
@@ -42,8 +51,21 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'dni', 'edad', 'first_name', 'last_name',
+        fields = ('username', 'dni', 'first_name', 'last_name',
                   'email', 'password1', 'password2',)
+
+
+class SignUpForm2(ModelForm):
+    nacimiento = forms.DateInput()
+    opciones = [('True', 'Si'), ('False', 'No')]
+    comorbilidad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Comorbilidades')
+
+    class Meta:
+        model = Paciente
+        fields = ('nacimiento', 'comorbilidad',)
+        widgets = {
+            'nacimiento': forms.DateInput(attrs={'type': 'date', 'min': '1920-01-01', 'max': '2022-06-13'})
+        }
 
 
 class VacunasAnterioresForm(ModelForm):
@@ -61,11 +83,10 @@ class VacunasAnterioresForm(ModelForm):
 
 
 class ElegirCentroForm(ModelForm):
-
-    #opciones = [(CentroDeVacunacion.objects.get(pk='Bosque'), 'Bosque'),
+    # opciones = [(CentroDeVacunacion.objects.get(pk='Bosque'), 'Bosque'),
     #            (CentroDeVacunacion.objects.get(pk='Comedor Universitario'), 'Comedor Universitario'),
     #            (CentroDeVacunacion.objects.get(pk='Hipodromo'), 'Hipodromo')]
-    #nombre = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Elegi tu centro')
+    # nombre = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Elegi tu centro')
 
     class Meta:
         model = Paciente
@@ -78,7 +99,9 @@ class ModificarDatosForm(ModelForm):
         first_name = forms.CharField(max_length=100, label='Nombre')
         last_name = forms.CharField(max_length=100, label='Apellido')
         email = forms.EmailField(max_length=150, label='Email')
-        edad = forms.IntegerField(label='Edad', min_value=0, max_value=120, help_text='entre 0 y 120')
+        nacimiento = forms.DateInput()
+        opciones = [('True', 'Si'), ('False', 'No')]
+        comorbilidad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Comorbilidades')
         # username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
 
     # def clean_email(self):
@@ -92,7 +115,10 @@ class ModificarDatosForm(ModelForm):
 
     class Meta:
         model = Paciente
-        fields = ('dni', 'first_name', 'last_name', 'edad', 'email')
+        fields = ('dni', 'first_name', 'last_name', 'nacimiento', 'email', 'comorbilidad')
+        widgets = {
+            'nacimiento': forms.DateInput(attrs={'type': 'date', 'min': '1920-01-01', 'max': '2022-06-13'})
+        }
 
 
 class ModificarDatosForm2(ModelForm):
@@ -118,6 +144,7 @@ class validarIdentidadRenaperForm(ModelForm):
         model = Paciente
         fields = ()
 
+<<<<<<< HEAD
 class registrarAplicacionForm(ModelForm):
     nombrevacuna = forms.ModelChoiceField(label = 'Nombre de la vacuna', queryset=
         Vacuna.objects.all())
@@ -131,3 +158,30 @@ class registrarAplicacionForm(ModelForm):
     class Meta:
         model = Aplicacion
         fields = ('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote', 'id_paciente')
+=======
+
+class SolicitarTurnoForm(ModelForm):
+    fecha = forms.DateInput()
+
+    class Meta:
+        model = TurnoSlot
+        fields = ('fecha',)
+        widgets = {
+            'fecha': forms.DateInput(attrs={'type': 'date', 'min': '2022-06-13', 'max': '2024-01-01'})
+        }
+
+
+class SolicitarTurnoForm2(ModelForm):
+    class Meta:
+        model = Turno
+        labels = {
+            "horaturnoID": "Horario"
+        }
+        fields = ('horaturnoID',)
+
+
+class CancelarTurnoForm(ModelForm):
+    class Meta:
+        model = Turno
+        fields = ()
+>>>>>>> 2ea90d50f0621d0e790b28f9929539685000f29d

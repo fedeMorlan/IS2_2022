@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Falta informacion vacunas previas{% endblock %}
+
+{% block content %}
+<h1>Usuario sin vacunas previas registradas</h1>
+<p>
+Para solicitar un turno, es necesario que cargues en el sistema tus vacunas anteriores. 
+</p>
+<a href="../vacunasant/"><button>Cargar mis vacunas previas</button></a>
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+
+
+{% endblock content %}

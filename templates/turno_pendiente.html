@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Turno pendiente {% endblock %}
+
+{% block content %}
+<h1>Turno pendiente</h1>
+{% if turnoActual %}
+<p>Turno pendiente : {{turnoActual}} </p>
+<p>
+    <a href="{% url 'modificar turno' %}"><button>Modificar turno</button></a>
+    <a href="{% url 'cancelar turno' %}"><button>Cancelar turno</button></a>
+</p>   
+{% else %}
+<p>Actualmente no tienes ningun turno pendiente.</p>
+{% endif %}
+
+
+
+{% endblock content %}
