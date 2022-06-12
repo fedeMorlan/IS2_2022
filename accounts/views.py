@@ -1,3 +1,5 @@
+from lib2to3.pgen2.pgen import PgenGrammar
+from logging import root
 from struct import pack
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -18,6 +20,13 @@ from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
 from dal import autocomplete
+from PIL import Image
+import glob, io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+import os
+
 
 """
 class SignUpView(generic.CreateView):
@@ -444,3 +453,37 @@ def registrarAplicacion_view(request):
 
     return render(request, 'registrar_aplicacion.html', {'form': form})
 
+def obtenerCertificado_view(request):
+    user = request.user.id
+    if Aplicacion.objects.filter(id_paciente=user).exists():
+        return generarPDF_view(request)
+    else:
+        return render(request, 'sin_vacunas_aplicadas.html')
+
+def generarPDF_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    userinfo = User.objects.get(id=user)
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer)
+    vacunas = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna')
+    nombre = userinfo.paciente.first_name
+    apellido = userinfo.paciente.last_name
+    dni = userinfo.paciente.dni
+    texto = pdf.beginText()
+    texto.setTextOrigin(inch,10*inch)
+    texto.setFont("Helvetica", 14)
+    #pdf.drawImage(10,10, imagen)
+    texto.textLine("Paciente: " + nombre + " " + apellido)
+    texto.textLine("DNI: "+ dni)
+    texto.textLine("Certifico que el paciente recibió las vacunas: ")
+    vacs = []
+    for vacuna in vacunas:
+        vacs.append(vacuna[0])
+    for line in vacs:
+        texto.textLine(line)
+    pdf.drawText(texto)
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="certificado.pdf")    
