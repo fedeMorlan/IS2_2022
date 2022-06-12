@@ -1,0 +1,49 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Solicitar turno de vacunacion{% endblock %}
+
+{% block content %}
+<h1>Solicitar turno de vacunacion</h1>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <p style="color: rgb(255, 0, 0); font-size: .8em;" >{{ error }}</p>
+      {% endfor %}
+    </p>
+    {% endfor %}
+    {% for field in form2 %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <p style="color: rgb(255, 0, 0); font-size: .8em;" >{{ error }}</p>
+      {% endfor %}
+    </p>
+    {% endfor %}
+    {% if messages %}
+        <p>
+        <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: rgb(255, 0, 0); font-size: .8em;">{{ message }}</li>
+        {% endfor %}
+        </ul>
+        </p>
+    {% endif %}
+    <div class="buttonholder">
+        <button type="submit">Solicitar</button>
+    </div>
+</form>
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+
+{% endblock content %}

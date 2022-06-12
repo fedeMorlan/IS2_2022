@@ -8,12 +8,13 @@
     <ul class="userinfo">
         <li><b>Usuario:</b> {{user.username}}</li>
         <li><b>Dni:</b> {{user.paciente.dni}}</li>
-        <li><b>Edad:</b> {{user.paciente.edad}} años</li>
+        <li><b>Fecha de nacimiento:</b> {{user.paciente.nacimiento}}</li>
         <li><b>Nombre:</b> {{user.paciente.first_name}}</li>
         <li><b>Apellido:</b> {{user.paciente.last_name}}</li>
         <li><b>Email:</b> {{user.paciente.email}}</li>
         <li><b>Centro elegido:</b> {{user.paciente.centro_vacunacion}}</li>
         <li><b>Vacunas aplicadas previamente:</b> {{request.vacunas}}</li>
+        <li><b>Comorbilidad:</b> {{user.paciente.comorbilidad}}</li>
     </ul>
 </p>
 <ul class="botonera">
@@ -23,6 +24,7 @@
     <a href="../modificar_datos/"><button>Modificar datos del perfil</button></a>
     <a href="../validar_identidad/"><button>Validar identidad con RENAPER</button></a>
 </ul>
+<p><a class="pedirturno" href="{% url 'Solicitar turno' %}">Solicitar turno</a></p>
 
 
 {% endblock content %}

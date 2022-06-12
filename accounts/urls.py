@@ -15,5 +15,9 @@ urlpatterns = [
     path('modificar_datos/', modificarDatos_view, name='Modificar datos personales'),
     path('validar_identidad/', validarIdentidadRenaper_view, name='Validar identidad con RENAPER'),
     path('solicitar_turno/', solicitarTurno_view, name='Solicitar turno'),
-    path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas')
+    path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas'),
+    path('turno_pendiente/', turnoPendiente_view, name='turno pendiente'),
+    path('cancelar_turno/', cancelarTurno_view, name='cancelar turno'),
+    path('modificar_turno/', modificarTurno_view, name='modificar turno'),
 ]
+

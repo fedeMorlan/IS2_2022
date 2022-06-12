@@ -1,0 +1,11 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Turno cancelado{% endblock %}
+
+{% block content %}
+<h1>Turno cancelado</h1>
+<p> El turno se canceló correctamente.</p>
+<a href="{% url 'userinfo' %}"><button class="volver" type="button">Volver</button></a>
+
+{% endblock content %}

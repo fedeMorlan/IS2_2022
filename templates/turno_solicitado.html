@@ -1,0 +1,23 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Turno solicitado{% endblock %}
+
+{% block content %}
+<h1>Turno solicitado</h1>
+
+<!-- se discrimina si el turno fue solicitado previamente  -->
+<p>Turno : {{turnoActual}} </p>
+{% if not previo %}
+    <p> Se solicito el turno correctamente. Te llegara un email a tu casilla de correo con la informacion.</p>   
+{% else %}
+    <p> Ya tienes un turno solicitado previamente, no se puede solicitar uno nuevo, pero se puede modificar o cancelar el actual.</p>
+    <p>
+        <a href="{% url 'modificar turno' %}"><button>Modificar turno</button></a>
+        <a href="{% url 'cancelar turno' %}"><button>Cancelar turno</button></a>
+    </p>    
+{% endif %}
+
+
+<a href="{% url 'userinfo' %}"><button class="volver">Volver</button></a>
+{% endblock content %}

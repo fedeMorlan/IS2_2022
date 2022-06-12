@@ -1,7 +1,7 @@
 from struct import pack
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
+from datetime import date
 # Create your views here.
 
 # builtin: UserCreationForm para registro
@@ -11,9 +11,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion
-from .forms import ModificarDatosForm2, SignUpForm, VacunasAnterioresForm, ElegirCentroForm, ModificarDatosForm, \
-    validarIdentidadRenaperForm
+from .models import CentroDeVacunacion, Paciente, VacunasAnteriores, Aplicacion, TurnoSlot, Turno, HoraTurno
+from .forms import *
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
@@ -31,14 +30,19 @@ class SignUpView(generic.CreateView):
 
 
 def signup_view(request):
-    form = SignUpForm(request.POST)
-    if form.is_valid():
+    form = SignUpForm(request.POST, request.FILES)
+    form2 = SignUpForm2(request.POST, request.FILES)
+    if form.is_valid() and form2.is_valid():
         user = form.save()
+        #user2 = form2.save(commit=False)
         user.paciente.refresh_from_db()
         user.paciente.dni = form.cleaned_data.get('dni')
         user.paciente.first_name = form.cleaned_data.get('first_name')
         user.paciente.last_name = form.cleaned_data.get('last_name')
         user.paciente.email = form.cleaned_data.get('email')
+        user.paciente.nacimiento = form2.cleaned_data['nacimiento']
+        user.paciente.comorbilidad = form2.cleaned_data.get('comorbilidad')
+        user.save()
         user.paciente.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
@@ -46,9 +50,10 @@ def signup_view(request):
         login(request, user)
         return redirect('home')
     # descomentar esto es poco informativo para el user
-    # else:
-    #    form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    #else:
+    #    form = SignUpForm(instance=User)
+    #    form2 = SignUpForm2(instance=Paciente)
+    return render(request, 'signup.html', {'form': form, 'form2': form2})
 
 
 def userinfo_view(request):
@@ -129,7 +134,8 @@ def modificarDatos_view(request):
             user_info.email = user_info.paciente.email
             user_info.paciente.first_name = form.cleaned_data.get('first_name')
             user_info.paciente.last_name = form.cleaned_data.get('last_name')
-            user_info.paciente.edad = form.cleaned_data.get('edad')
+            user_info.paciente.nacimiento = form.cleaned_data.get('nacimiento')
+            user_info.paciente.comorbilidad = form.cleaned_data.get('comorbilidad')
             user_info.username = form2.cleaned_data.get('username')
             paciente.save()
             try:
@@ -171,10 +177,240 @@ def validarIdentidadRenaper_view(request):
 
 
 @login_required
+def cancelarTurno_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    turnos = Turno.objects
+    turno_dic = {}
+    form = CancelarTurnoForm(request.POST, request.FILES)
+    try:
+        turno_data = turnos.get(paciente=paciente)
+    except:
+        pass
+    if request.method == 'POST' and form.is_valid():
+        turnoActual = turnos.get(paciente=paciente)
+        # aumentar la capacidad del turnoslot correspondiente
+        tSlotActual = TurnoSlot.objects.get(slotID=turnoActual.turnoSlotID.slotID)
+        tSlotActual.cupo -= 1
+        tSlotActual.save()
+        # eliminar la tupla de la tabla de turnos
+        turnos.filter(paciente=paciente).delete()
+        return render(request, 'turno_cancelado.html')
+    else:
+        form = CancelarTurnoForm()
+    return render(request, 'cancelar_turno.html', {"turnoActual": turno_data, "form": form})
+
+
+@login_required
+def turnoPendiente_view(request):
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    turnos = Turno.objects
+    turno_dic = {}
+    try:
+        turno_data = turnos.get(paciente=paciente)
+        turno_dic = {"turnoActual": turno_data}
+    except:
+        pass
+    return render(request, 'turno_pendiente.html', turno_dic)
+
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+
+def calcular_dias(fecha):
+    hoy = date.today()
+    return (fecha - hoy).days
+
+@login_required
 def solicitarTurno_view(request):
     user = request.user.id
     paciente = Paciente.objects.get(user__id=user)
     user_info = User.objects.get(id=user)
+    # ---------- CASOS QUE NO PUEDEN PEDIR TURNO --------------
+    # si no esta validado en renaper
     if not user_info.paciente.validado_renaper:
         return render(request, 'no_validado.html')
-    # if user_info.paciente.
+
+    # si no tiene vacunas previas cargadas en el sistema
+    if not VacunasAnteriores.objects.filter(pk=user).exists():
+        return render(request, 'no_vacunasprevias.html')
+
+    turnos = TurnoSlot.objects
+    turnos2 = Turno.objects
+    horas = HoraTurno.objects
+    # si ya solicito un turno
+    if turnos2.filter(paciente=paciente).exists():
+        turno_data = turnos2.get(paciente=paciente)
+        # print('DEBUG: ' + str(turno_data))
+        turno_dic = {"turnoActual": turno_data, "previo": "ok"}
+        return render(request, 'turno_solicitado.html', turno_dic)
+
+    # ----------- PEDIR TURNO --------------------
+    # elegir fecha y hora de turno
+    form = SolicitarTurnoForm(request.POST, request.FILES)
+    form2 = SolicitarTurnoForm2(request.POST, request.FILES)
+
+    if request.method == 'POST' and form.is_valid() and form2.is_valid():
+        fechaElegida = form.cleaned_data['fecha']
+        horaElegida = form2.cleaned_data.get('horaturnoID').hora
+        # print("DEBUG:" + horaElegida)
+        horaActual = horas.filter(hora=horaElegida).get()
+        # print('DEBUG: entra al loop')
+
+        # definir si la fecha es posible por paciente de riesgo ------
+        # creamos un boolean para interrumpir el envio del formulario mas adelante
+        ok = True
+        if not paciente.comorbilidad and (calculate_age(paciente.nacimiento) < 60):
+
+            if calcular_dias(fechaElegida) <= 30:
+                ok = False
+                messages.error(request, "Se requiere reservar una fecha posterior a 30 dias por no ser paciente de riesgo")
+        else:
+            if calcular_dias(fechaElegida) <= 7:
+                ok = False
+                messages.error(request, "Se requiere reservar una fecha posterior a 7 dias")
+
+
+        print('DEBUG: dias desde hoy hasta la fecha: ' + str(calcular_dias(fechaElegida)))
+
+        # si la fecha existe
+        if turnos.filter(fecha=fechaElegida).exists() and ok:
+            # print('DEBUG: existe en la bd')
+            turnoSlotActual = turnos.get(fecha=fechaElegida)
+            # si hay cupo disponible
+            if turnoSlotActual.cupo < 5:
+                # print('DEBUG: hay cupo')
+                # incrementar el contador y guardar turno
+                turnoSlotActual.cupo += 1
+                turnoSlotActual.save()
+                turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
+                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                turno.save()
+                turno_data = turnos2.get(paciente=paciente)
+                # print('DEBUG: ' + str(turno_data))
+                turno_dic = {"turnoActual": turno_data}
+                return render(request, 'turno_solicitado.html', turno_dic)
+            # si no hay cupo
+            else:
+                # mensaje que indica que no hay cupo
+                messages.error(request, "No hay mas turnos disponibles en este horario")
+
+        # si la fecha no existe
+        elif ok:
+            # print('DEBUG: creando una entrada para el slot elegido')
+            turnoSlotActual = TurnoSlot(fecha=fechaElegida, cupo=1, horaID=horaActual)
+            turnoSlotActual.save()
+            turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
+                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+            turno.save()
+            # crear fecha y guardar turno
+            turno_data = turnos2.get(paciente=paciente)
+            # print('DEBUG: ' + str(turno_data))
+            turno_dic = {"turnoActual": turno_data}
+            return render(request, 'turno_solicitado.html', turno_dic)
+    else:
+        # print('DEBUG: form is not valid')
+        form = SolicitarTurnoForm()
+        form2 = SolicitarTurnoForm2()
+
+
+    # FALTA: enviar mail de turno
+    return render(request, 'solicitar_turno.html', {'form': form, 'form2': form2})
+
+
+def borrarTurno(turno):
+    # aumentar la capacidad del turnoslot correspondiente
+    tSlotActual = TurnoSlot.objects.get(slotID=turno.turnoSlotID.slotID)
+    # print("DEBUG: turnoSlot a restar: " + str(tSlotActual))
+    tSlotActual.cupo -= 1
+    tSlotActual.save()
+    # eliminar la tupla de la tabla de turnos
+    turno.delete()
+    return
+
+@login_required
+def modificarTurno_view(request):
+
+    user = request.user.id
+    paciente = Paciente.objects.get(user__id=user)
+    user_info = User.objects.get(id=user)
+    form = SolicitarTurnoForm(request.POST, request.FILES)
+    form2 = SolicitarTurnoForm2(request.POST, request.FILES)
+    turnos = TurnoSlot.objects
+    turnos2 = Turno.objects
+    horas = HoraTurno.objects
+    if request.method == 'POST' and form.is_valid() and form2.is_valid():
+        fechaElegida = form.cleaned_data['fecha']
+        horaElegida = form2.cleaned_data.get('horaturnoID').hora
+        # print("DEBUG:" + horaElegida)
+        horaActual = horas.filter(hora=horaElegida).get()
+        # print('DEBUG: entra al loop')
+
+        # definir si la fecha es posible por paciente de riesgo ------
+        # creamos un boolean para interrumpir el envio del formulario mas adelante
+        ok = True
+        if not paciente.comorbilidad and (calculate_age(paciente.nacimiento) < 60):
+
+            if calcular_dias(fechaElegida) <= 30:
+                ok = False
+                messages.error(request,
+                               "Se requiere reservar una fecha posterior a 30 dias por no ser paciente de riesgo")
+        else:
+            if calcular_dias(fechaElegida) <= 7:
+                ok = False
+                messages.error(request, "Se requiere reservar una fecha posterior a 7 dias")
+
+        print('DEBUG: dias desde hoy hasta la fecha: ' + str(calcular_dias(fechaElegida)))
+
+        # si la fecha existe
+        if turnos.filter(fecha=fechaElegida).exists() and ok:
+            # print('DEBUG: existe en la bd')
+            turnoSlotActual = turnos.get(fecha=fechaElegida)
+            # si hay cupo disponible
+            if turnoSlotActual.cupo < 5:
+                # print('DEBUG: hay cupo')
+
+                # eliminar el anterior y actualizar el slot correspondiente
+                borrarTurno(turnos2.get(paciente=paciente))
+
+                # incrementar el contador y guardar turno
+                turnoSlotActual.refresh_from_db()
+                turnoSlotActual.cupo += 1
+                turnoSlotActual.save()
+                turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
+                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                turno.save()
+
+                # print('DEBUG: ' + str(turno_data))
+                turno_dic = {"turnoActual": turno}
+                return render(request, 'turno_solicitado.html', turno_dic)
+            # si no hay cupo
+            else:
+                # mensaje que indica que no hay cupo
+                messages.error(request, "No hay mas turnos disponibles en este horario")
+
+        # si la fecha no existe
+        elif ok:
+            # eliminar el anterior y actualizar el slot correspondiente
+            borrarTurno(turnos2.get(paciente=paciente))
+
+            # print('DEBUG: creando una entrada para el slot elegido')
+
+            turnoSlotActual = TurnoSlot(fecha=fechaElegida, cupo=1, horaID=horaActual)
+            turnoSlotActual.save()
+            turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
+                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+            turno.save()
+            # print('DEBUG: ' + str(turno_data))
+            turno_dic = {"turnoActual": turno}
+            return render(request, 'turno_solicitado.html', turno_dic)
+    else:
+        # print('DEBUG: form is not valid')
+        form = SolicitarTurnoForm()
+        form2 = SolicitarTurnoForm2()
+
+    # FALTA: enviar mail de turno
+    return render(request, 'modificar_turno.html', {'form': form, 'form2': form2})
