@@ -4,13 +4,14 @@ from tkinter.tix import Form
 from urllib import request
 from urllib.request import Request
 import datetime
+from xml.dom import ValidationErr
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
-from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.forms import ModelForm, ValidationError
 from dal import autocomplete
 from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 
@@ -182,3 +183,12 @@ class CancelarTurnoForm(ModelForm):
     class Meta:
         model = Turno
         fields = ()
+
+class CustomEmailValidationOnForgotPassword(PasswordResetForm):
+
+    def clean_email(self):
+        email2 = self.cleaned_data['email']
+        if not User.objects.filter(email__iexact=email2).exists():
+            raise ValidationError("No hay usuarios registrados con este email")
+        
+        return email2

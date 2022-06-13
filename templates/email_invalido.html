@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}No validado{% endblock %}
+
+{% block content %}
+<h1>Email no validado</h1>
+<p>
+    El email ingresado no esta registrado en el sistema. 
+</p>
+<a href="{% url 'password_reset' %}"><button class="volver">Volver</button></a>
+
+
+{% endblock content %}

@@ -139,5 +139,6 @@ def update_profile_signal(sender, instance, created, **kwargs):
     if created:
         Paciente.objects.create(user=instance)
     instance.paciente.save()
+    print(instance)
     # instance.profile.save()
 # Create your models here.

@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include   # new
+from django.urls import path, include, re_path  # new
 from django.views.generic.base import TemplateView
+from accounts.forms import CustomEmailValidationOnForgotPassword
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +27,11 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),  # new
     # esto es para el logueo de users generados a traves del superuser de django
     # https://learndjango.com/tutorials/django-login-and-logout-tutorial
-    path("accounts/", include("django.contrib.auth.urls"))  # new
+    path("accounts/", include("django.contrib.auth.urls")),  # new
+    #re_path(r'^password-reset/$',
+    #'django.contrib.auth.views.password_reset',
+    #{'post_reset_redirect': '/user/password/reset/done/',
+    # 'html_email_template_name': 'registration/password_reset_email.html',
+    # 'password_reset_form': CustomEmailValidationOnForgotPassword},
+    #name="password_reset"),
 ]

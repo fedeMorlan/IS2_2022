@@ -1,6 +1,6 @@
 # accounts/urls.py
-from django.urls import path
-
+from django.urls import path, re_path
+from django.contrib.auth.views import PasswordResetView
 # from .views import SignUpView
 from .views import *
 from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view, PacienteAutocomplete
@@ -23,6 +23,6 @@ urlpatterns = [
     path('modificar_turno/', modificarTurno_view, name='modificar turno'),
     path('certificado/', obtenerCertificado_view, name='obtener certificado'),
     path('home_vacunador/', homeVacunador_view, name='home vacunador'),
-
+    path('email_invalido/', emailInvalido_view, name='email invalido'),
 ]
 

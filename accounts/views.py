@@ -495,4 +495,7 @@ def generarPDF_view(request):
 
 def homeVacunador_view(request):
     return render(request, 'home_vac.html')
+  
 
+def emailInvalido_view(request):
+    return render(request, 'email_invalido.html')
