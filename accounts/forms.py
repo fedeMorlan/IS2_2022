@@ -185,10 +185,10 @@ class CancelarTurnoForm(ModelForm):
         fields = ()
 
 class CustomEmailValidationOnForgotPassword(PasswordResetForm):
-
     def clean_email(self):
         email2 = self.cleaned_data['email']
         if not User.objects.filter(email__iexact=email2).exists():
             raise ValidationError("No hay usuarios registrados con este email")
         
         return email2
+
