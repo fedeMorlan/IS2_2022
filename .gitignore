@@ -1,4 +1,5 @@
-sent_emails/
+.venv/
+.sent_emails/
 .vs
 .idea
 .vscode
