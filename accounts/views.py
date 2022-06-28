@@ -499,3 +499,4 @@ def homeVacunador_view(request):
 
 def emailInvalido_view(request):
     return render(request, 'email_invalido.html')
+

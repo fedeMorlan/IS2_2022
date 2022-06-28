@@ -26,6 +26,8 @@ class Paciente(models.Model):
     nacimiento = models.DateField(blank=True, null=True)
     comorbilidad = models.BooleanField(default=False)
     validado_renaper = models.BooleanField(default=False)
+    dueño = models.BooleanField(default=False)
+    vacunador = models.BooleanField(default=False)
 
     centro_vacunacion = models.ForeignKey(CentroDeVacunacion, default='Bosque', on_delete=models.CASCADE)
 

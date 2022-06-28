@@ -192,3 +192,4 @@ class CustomEmailValidationOnForgotPassword(PasswordResetForm):
         
         return email2
 
+
