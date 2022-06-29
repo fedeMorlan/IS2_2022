@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Turnos del dia{% endblock %}
+
+{% block content %}
+<h1>Turnos para el dia {{hoy}}</h1>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+  {% endfor %}
+  <div class="buttonholder">
+    <button type="submit">Confirmar</button>
+  </div>
+</form>
+<h2>Turnos del dia para el Centro de Vacunación {{centro}}</h2>
+{% for turno in turnos %}
+
+    <p>
+    {{turno}}
+    </p>
+    
+{% endfor %}
+<a href="#"><button class="volver">Volver</button></a>
+{% endblock content %}
+

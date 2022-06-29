@@ -506,3 +506,17 @@ def verTurnosDelDia_view(request):
     turnos_del_dia = Turno.objects.filter(turnoSlotID__fecha=hoy)
     turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy}
     return render(request, 'turnos_del_dia_todos.html',turnoDic)
+
+def verTurnosDelDiaCentro_view(request):
+    hoy = datetime.today().strftime('%Y-%m-%d')
+    turnos_del_dia = Turno.objects.filter(turnoSlotID__fecha=hoy)
+    form = TurnosDelDiaPorCentroForm(request.POST)
+    centro = ''
+    if form.is_valid():
+        form.save(commit=False)
+        centro = form.cleaned_data.get('centro')
+        turnos_del_dia = Turno.objects.filter(centro__nombre = centro).filter(turnoSlotID__fecha=hoy)
+        
+    turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy, 'centro':centro, 'form':form}
+    return render(request, 'turnos_del_dia_centro.html',turnoDic)
+    

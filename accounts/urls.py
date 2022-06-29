@@ -25,5 +25,6 @@ urlpatterns = [
     path('home_vacunador/', homeVacunador_view, name='home vacunador'),
     path('email_invalido/', emailInvalido_view, name='email invalido'),
     path('turnos_del_dia_todos/', verTurnosDelDia_view, name='todos los turnos del dia'),
+    path('turnos_del_dia_centro/', verTurnosDelDiaCentro_view, name='turnos del dia por centro'),
 ]
 
