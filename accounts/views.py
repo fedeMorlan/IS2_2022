@@ -27,6 +27,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 import os
 from accounts.models import Vacunador
+from datetime import datetime
 
 
 """
@@ -500,3 +501,8 @@ def homeVacunador_view(request):
 def emailInvalido_view(request):
     return render(request, 'email_invalido.html')
 
+def verTurnosDelDia_view(request):
+    hoy = datetime.today().strftime('%Y-%m-%d')
+    turnos_del_dia = Turno.objects.filter(turnoSlotID__fecha=hoy)
+    turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy}
+    return render(request, 'turnos_del_dia_todos.html',turnoDic)
