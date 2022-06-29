@@ -516,7 +516,8 @@ def verTurnosDelDiaCentro_view(request):
         form.save(commit=False)
         centro = form.cleaned_data.get('centro')
         turnos_del_dia = Turno.objects.filter(centro__nombre = centro).filter(turnoSlotID__fecha=hoy)
-        
+    if centro == '':
+        turnos_del_dia = ''    
     turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy, 'centro':centro, 'form':form}
     return render(request, 'turnos_del_dia_centro.html',turnoDic)
     
