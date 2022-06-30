@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from lib2to3.pgen2.pgen import PgenGrammar
 from logging import root
 from struct import pack
@@ -516,8 +517,8 @@ def verTurnosDelDiaCentro_view(request):
         form.save(commit=False)
         centro = form.cleaned_data.get('centro')
         turnos_del_dia = Turno.objects.filter(centro__nombre = centro).filter(turnoSlotID__fecha=hoy)
-    if centro == '':
-        turnos_del_dia = ''    
+    if not turnos_del_dia or centro == '' :
+        turnos_del_dia = ('No hay turnos para mostrar',)  
     turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy, 'centro':centro, 'form':form}
     return render(request, 'turnos_del_dia_centro.html',turnoDic)
     
