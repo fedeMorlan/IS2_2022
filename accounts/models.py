@@ -60,8 +60,8 @@ class Aplicacion(models.Model):
     # ya es primary key por ser AutoField
     id_aplicacion = models.AutoField
     nombrevacuna = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
-    fecha_de_aplicacion = models.DateField
-    numero_de_lote = models.IntegerField
+    fecha_de_aplicacion = models.DateField(null=False, blank=False)
+    numero_de_lote = models.IntegerField(null=False, blank=False)
     # no estoy seguro de como funciona el ForeignKey
     id_paciente = models.ForeignKey(Paciente, null=False, blank=False, on_delete=models.CASCADE)
     id_vacunador = models.ForeignKey(Vacunador, null=False, blank=False, on_delete=models.CASCADE)

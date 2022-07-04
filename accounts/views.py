@@ -2,6 +2,7 @@ from asyncio.windows_events import NULL
 from lib2to3.pgen2.pgen import PgenGrammar
 from logging import root
 from struct import pack
+from django.forms import ImageField
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from datetime import date
@@ -20,14 +21,15 @@ from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
-from dal import autocomplete
 from PIL import Image
 import glob, io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 import os
 from accounts.models import Vacunador
+from django.conf.urls.static import static
 from datetime import datetime
 
 
@@ -129,7 +131,12 @@ def elegirCentro_view(request):
 
 
 def verVacunasAplicadas_view(request):
-    request.data = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna')
+    vacunas = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote')
+    if not vacunas:
+        #lo pongo como parte de una tupla porque el html muestra la request.data por campos, si mando el string me muestra renglones de una letra
+        request.data = ("Usted no tiene vacunas aplicadas.",) 
+    else:
+        request.data = vacunas
     return render(request, 'vacunas_aplicadas.html')
 
 
@@ -429,18 +436,18 @@ def modificarTurno_view(request):
     # FALTA: enviar mail de turno
     return render(request, 'modificar_turno.html', {'form': form, 'form2': form2})
 
-class PacienteAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-
-        if not self.request.user.is_authenticated:
-            return Paciente.objects.none()
-
-        qs = Paciente.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-
-        return qs
+#class PacienteAutocomplete(autocomplete.Select2QuerySetView):
+#    def get_queryset(self):
+#
+#        if not self.request.user.is_authenticated:
+#            return Paciente.objects.none()
+#
+#        qs = Paciente.objects.all()
+#
+#        if self.q:
+#            qs = qs.filter(name__istartswith=self.q)
+#
+#        return qs
 
 def registrarAplicacion_view(request):
     form = registrarAplicacionForm(request.POST)
@@ -479,15 +486,20 @@ def generarPDF_view(request):
     texto = pdf.beginText()
     texto.setTextOrigin(inch,10*inch)
     texto.setFont("Helvetica", 14)
-    #pdf.drawImage(10,10, imagen)
-    texto.textLine("Paciente: " + nombre + " " + apellido)
+    
+    pdf.drawImage('static/img/Logo_VacunAssist_1.png' , 450,700, width=120, height=120 )
+    pdf.drawImage('static/img/qr.png' , 200,180, width=190, height=190)
+    
+    texto.textLine("El paciente: ")
+    texto.textLine( nombre + " " + apellido)
     texto.textLine("DNI: "+ dni)
-    texto.textLine("Certifico que el paciente recibió las vacunas: ")
+    texto.textLine("Recibio las siguientes dosis: ")
     vacs = []
     for vacuna in vacunas:
-        vacs.append(vacuna[0])
+        vacs.append(str(vacuna[0]))
     for line in vacs:
         texto.textLine(line)
+    pdf.drawString(175,160, "Para mas información, lea el código QR con la cámara su teléfono")
     pdf.drawText(texto)
     pdf.showPage()
     pdf.save()

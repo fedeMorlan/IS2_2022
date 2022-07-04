@@ -40,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',  # new
     'accounts',   # new
-    'dal',
-    'dal_select2',
     #'grappelli',
 ]
 
