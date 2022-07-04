@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Turnos del dia{% endblock %}
+
+{% block content %}
+<h1>Turnos para el dia {{hoy}} en todos los centros</h1>
+{% for turno in turnos %}
+
+    <p>
+    {{turno}}
+    </p>
+    
+{% endfor %}
+<a href="#"><button class="volver">Volver</button></a>
+{% endblock content %}

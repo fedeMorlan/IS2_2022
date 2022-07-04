@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from lib2to3.pgen2.pgen import PgenGrammar
 from logging import root
 from struct import pack
@@ -29,6 +30,7 @@ from reportlab.lib.utils import ImageReader
 import os
 from accounts.models import Vacunador
 from django.conf.urls.static import static
+from datetime import datetime
 
 
 """
@@ -511,3 +513,24 @@ def homeVacunador_view(request):
 
 def emailInvalido_view(request):
     return render(request, 'email_invalido.html')
+
+def verTurnosDelDia_view(request):
+    hoy = datetime.today().strftime('%Y-%m-%d')
+    turnos_del_dia = Turno.objects.filter(turnoSlotID__fecha=hoy)
+    turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy}
+    return render(request, 'turnos_del_dia_todos.html',turnoDic)
+
+def verTurnosDelDiaCentro_view(request):
+    hoy = datetime.today().strftime('%Y-%m-%d')
+    turnos_del_dia = Turno.objects.filter(turnoSlotID__fecha=hoy)
+    form = TurnosDelDiaPorCentroForm(request.POST)
+    centro = ''
+    if form.is_valid():
+        form.save(commit=False)
+        centro = form.cleaned_data.get('centro')
+        turnos_del_dia = Turno.objects.filter(centro__nombre = centro).filter(turnoSlotID__fecha=hoy)
+    if not turnos_del_dia or centro == '' :
+        turnos_del_dia = ('No hay turnos para mostrar',)  
+    turnoDic = {'turnos':turnos_del_dia, 'hoy':hoy, 'centro':centro, 'form':form}
+    return render(request, 'turnos_del_dia_centro.html',turnoDic)
+    
