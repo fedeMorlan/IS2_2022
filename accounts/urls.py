@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from django.contrib.auth.views import PasswordResetView
 # from .views import SignUpView
 from .views import *
-from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view, PacienteAutocomplete
+from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view
 
 urlpatterns = [
     # path("signup/", SignUpView.as_view(), name="signup"),
@@ -17,7 +17,7 @@ urlpatterns = [
     path('solicitar_turno/', solicitarTurno_view, name='Solicitar turno'),
     path('ver_vacunas_aplicadas/', verVacunasAplicadas_view, name='Ver mis vacunas aplicadas'),
     path('registrar_aplicacion/', registrarAplicacion_view, name='Registrar aplicacion de vacuna'),
-    path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
+    #path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
     path('turno_pendiente/', turnoPendiente_view, name='turno pendiente'),
     path('cancelar_turno/', cancelarTurno_view, name='cancelar turno'),
     path('modificar_turno/', modificarTurno_view, name='modificar turno'),

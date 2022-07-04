@@ -12,7 +12,6 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 from django.forms import ModelForm, ValidationError
-from dal import autocomplete
 from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 
 
