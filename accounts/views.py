@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
-from PIL import Image
+from PIL import Image, ImageChops
 import glob, io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
@@ -181,16 +181,21 @@ def validarIdentidadRenaper_view(request):
         if request.method == 'POST':
             form = validarIdentidadRenaperForm(request.POST, request.FILES, instance=paciente)
             if form.is_valid():
-                # frente = form.cleaned_data.get('frente')
-                # dorso = form.cleaned_data.get('dorso')
-                user_info.paciente.validado_renaper = True
-                paciente.save()
-                try:
-                    user_info.save()
-                except:
-                    pass
+                if (request.FILES['frente'].name == request.FILES['dorso'].name ):
+                    messages.error(request, "Cargue dos imagenes distinstas.")
+                else:
+                    frente = form.cleaned_data.get('frente')
+                    dorso = form.cleaned_data.get('dorso')
 
-                return render(request, 'validado.html')
+                        
+                    user_info.paciente.validado_renaper = True
+                    paciente.save()
+                    try:
+                        user_info.save()
+                    except:
+                        pass
+
+                    return render(request, 'validado.html')
         else:
             form = validarIdentidadRenaperForm(instance=paciente)
     return render(request, 'validar_identidad.html', {'form': form})

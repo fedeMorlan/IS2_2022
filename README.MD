@@ -22,3 +22,8 @@ esta carpeta que nos crea automaticamente queda excluida para el push gracias al
 
 3) ingresar a un navegador y entrar a 127.0.0.1:8000
    si no anda, ingresar en otro navegador o en modo incognito
+
+Para cargar la base de datos:
+   python manage.py loaddata centroVacunacion.json
+   python manage.py loaddata horasTurno.json
+   python manage.py loaddata vacunas.json
