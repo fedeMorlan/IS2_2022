@@ -1,3 +1,4 @@
+from asyncore import write
 from enum import unique
 from tkinter import HIDDEN
 from tkinter.tix import Form
@@ -10,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
-from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm, ValidationError
 from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
 
@@ -195,4 +196,11 @@ class TurnosDelDiaPorCentroForm(ModelForm):
     centro = forms.ModelChoiceField(queryset=CentroDeVacunacion.objects.all()) 
     class Meta:
         model = CentroDeVacunacion
-        fields = ('centro',)
+        fields = ('centro',)   
+
+class EmailValidationOnForgotPassword(PasswordResetForm):
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(("Email no registrado"))
+        return email

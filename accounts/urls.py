@@ -4,6 +4,7 @@ from django.contrib.auth.views import PasswordResetView
 # from .views import SignUpView
 from .views import *
 from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view
+from accounts.forms import EmailValidationOnForgotPassword
 
 urlpatterns = [
     # path("signup/", SignUpView.as_view(), name="signup"),
@@ -26,5 +27,6 @@ urlpatterns = [
     path('email_invalido/', emailInvalido_view, name='email invalido'),
     path('turnos_del_dia_todos/', verTurnosDelDia_view, name='todos los turnos del dia'),
     path('turnos_del_dia_centro/', verTurnosDelDiaCentro_view, name='turnos del dia por centro'),
-]
+    path('password_reset/', PasswordResetView.as_view(form_class=EmailValidationOnForgotPassword), name='password_reset'),
+    ]
 
