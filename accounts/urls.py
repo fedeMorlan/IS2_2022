@@ -3,7 +3,6 @@ from django.urls import path, re_path
 from django.contrib.auth.views import PasswordResetView
 # from .views import SignUpView
 from .views import *
-from .views import userinfo_view, modificarDatos_view, validarIdentidadRenaper_view, registrarAplicacion_view
 from accounts.forms import EmailValidationOnForgotPassword
 
 urlpatterns = [
@@ -28,5 +27,8 @@ urlpatterns = [
     path('turnos_del_dia_todos/', verTurnosDelDia_view, name='todos los turnos del dia'),
     path('turnos_del_dia_centro/', verTurnosDelDiaCentro_view, name='turnos del dia por centro'),
     path('password_reset/', PasswordResetView.as_view(form_class=EmailValidationOnForgotPassword), name='password_reset'),
+    path('home_administrador/', homeAdministrador_view, name='home dueño'),
+    path('registrar_vacunador/', registrarVacunador_view, name='registrar vacunador'),
+    path('registrar_vacunador/exito', registrarVacunadorExito_view, name='registrar vacunador exito'),
     ]
 

@@ -1,0 +1,250 @@
+h1 {
+    margin-top: 0;
+}
+
+ul {
+    margin:0 ;
+    padding: 0;
+    list-style: none;
+}
+
+
+li {
+    display: inline;
+    padding: 1em;
+}
+
+.userinfo li {
+    display: inline-block;
+}
+
+
+.linkBoton, .linkBoton:visited {
+    outline: none;
+    text-decoration: none;
+    text-align: center;
+    min-width: max-content;
+    color: whitesmoke;
+    display: inline-block;
+    border-radius: 0.7em;
+    background: rgb(172, 131, 203);
+    width: 20%;
+    line-height: 2;
+    box-shadow: 2px 2px 2px black, inset 2px 2px rgba(255, 255, 255, 0.6), inset -2px -2px rgba(0,0,0,0.2);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.24));
+}
+
+.linkBoton:active {
+    box-shadow:  inset 2px 2px rgba(0, 0, 0, 0.2), inset -2px -2px rgba(255, 255, 255, 0.6);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.5));
+}
+
+.linkBoton:focus{
+    outline: #000 2px;
+    background: rgb(142, 101, 173);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.44));
+}
+
+.pedirturno, .pedirturno:visited {
+    outline: none;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    min-width: max-content;
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    border-radius: 0.7em;
+    background: rgb(136, 131, 203);
+    width: 34%;
+    line-height: 4;
+    box-shadow: 3px 3px 3px black, inset 3px 3px rgba(255, 255, 255, 0.6), inset -2px -2px rgba(0,0,0,0.2);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.24));
+}
+
+.pedirturno:active {
+    box-shadow:  inset 2px 2px rgba(0, 0, 0, 0.2), inset -2px -2px rgba(255, 255, 255, 0.6);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.5));
+}
+
+.pedirturno:focus{
+    outline: #000 2px;
+    background: rgb(136, 131, 203);
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0), rgba(0,0,0,0.44));
+}
+
+
+header a {
+    outline: none;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    width: 19.5%;
+    min-width: max-content; 
+    margin-right: 0.625%;
+    text-align: center;
+    line-height: 3;
+    color: black;
+}
+
+header a:link, a:visited, a:focus {
+    background: rgb(182, 167, 193);
+  }
+  
+header a:hover {
+    background: rgb(122 81 153);
+    color: white;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+  
+header a:active {
+    background: rgb(43, 43, 45);
+    color: white;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+
+.logo img {
+    width: 200px;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    padding-top: 15px;
+}
+
+.logo p{
+    margin: 0;
+    font-size: 3em;
+    font-weight: bold;
+
+}
+
+body {
+    font  : 1.3rem sans-serif;
+    padding : 0.5em;
+    margin  : 0;
+    background-color: rgb(243, 243, 243);
+}
+
+header, footer {
+    background-color: rgb(16, 12, 18);
+    color: white;
+    line-height: 80px;
+    padding: 0 20px;
+  }
+
+
+
+
+form {
+    margin: 0 auto;
+    width: fit-content;
+    padding: 1em;
+    border: 1px solid rgb(172 213 141);
+    border-radius: 1em;
+    background-color: rgb(192 233 161);
+}
+
+div+div {
+    margin-top: 1em;
+}
+
+label span {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+}
+
+input, textarea {
+    font: 1em sans-serif;
+    width: 250px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+input[type=checkbox], input[type=radio] {
+    width: auto;
+    border: none;
+}
+
+input:focus, textarea:focus {
+    border-color: #000;
+}
+
+textarea {
+    vertical-align: top;
+    height: 5em;
+    resize: vertical;
+}
+
+
+button {
+    padding      : 1.2em;
+    padding-left: 1.7em;
+    padding-right: 1.7em;
+    font         : bold .8em sans-serif;
+    border       : 2px solid #333;
+    border-radius: 5px;
+    background   : rgb(215, 255, 215);
+    cursor       : pointer;
+    margin: 0.1em;
+    
+}
+
+.buttonholder{
+    text-align: center;
+}
+
+button:hover,
+button:focus {
+    outline     : none;
+    background  : rgb(162, 121, 193);
+    color       : #FFF;
+}
+
+button:active{
+    background  : rgb(162, 81, 143);
+}
+
+.volver{
+    background   : rgb(255, 215, 215);
+    border: 2px solid rgb(175 85 85);
+}
+
+.volver:hover, .volver:focus{
+    background: rgb(175 85 85);
+    color: white;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    
+}
+
+.volver:active{
+    background: rgb(205 55 55);
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+
+
+
+
+fieldset {
+    width: 250px;
+    box-sizing: border-box;
+    margin-left: 136px;
+    border: 1px solid #999;
+}
+
+
+label {
+    position: relative;
+}
+
+.centertext{
+    text-align: center;
+}

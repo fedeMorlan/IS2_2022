@@ -1,0 +1,23 @@
+<!-- templates/home.html -->
+{% extends "base_administrador.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<h1>Inicio</h1>
+
+{% if user.is_authenticated %}
+  Bienvenido {{ user.username }}!
+  <p><a class="linkBoton" href="#">Ver estadisticas</a></p>
+  <p><a class="linkBoton" href="{% url 'registrar vacunador' %}">Registrar vacunador</a></p>
+  <p><a class="linkBoton" href="#">Registrar administrador</a></p>
+  <p><a class="linkBoton" href="{% url 'logout' %}">Cerrar Sesion</a></p>
+  
+{% else %}
+  <p>Debes iniciar sesion para continuar</p>
+  <ul>
+    <li><a class="linkBoton" href="{% url 'login' %}">Iniciar Sesion</a></li>
+    <li><a class="linkBoton" href="{% url 'signup' %}">Registrarse</a></li>
+  </ul>
+{% endif %}
+{% endblock content %}

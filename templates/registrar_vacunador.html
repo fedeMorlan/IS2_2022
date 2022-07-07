@@ -1,0 +1,39 @@
+<!-- templates/home.html -->
+{% extends "base_administrador.html" %}
+
+{% block title %}Registrar Vacunador{% endblock %}
+
+{% block content %}
+<h1>Registrar vacunador</h1>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: rgb(255, 0, 0); font-size: .8em;" >{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    {% for field in form2 %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: rgb(255, 0, 0); font-size: .8em;" >{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <div class="buttonholder">
+      <button type="submit">Confirmar</button>
+    </div>
+  </form>
+
+{% endblock content %}
