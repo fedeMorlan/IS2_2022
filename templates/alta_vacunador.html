@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "base_administrador.html" %}
 
 {% block title %}Registrar Vacunador{% endblock %}
 
 {% block content %}
-  <h2>Registrarse</h2>
+  <h2>Registrar Vacunador</h2>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}

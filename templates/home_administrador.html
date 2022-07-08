@@ -1,15 +1,18 @@
 <!-- templates/home.html -->
-{% extends "base_vacunador.html" %}
+{% extends "base_administrador.html" %}
 
-{% block title %}Inicio Vacunadores{% endblock %}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
 <h1>Inicio</h1>
-<p> Faltan incorporar los botones indicados</p>
+
 {% if user.is_authenticated %}
-  <p><a class="linkBoton" href="#">Ver turno pendiente</a></p>
-  <p><a class="linkBoton" href="#">Ver mis dosis aplicadas</a></p>
+  Bienvenido {{ user.username }}!
+  <p><a class="linkBoton" href="#">Ver estadisticas</a></p>
+  <p><a class="linkBoton" href="{% url 'registrar vacunador' %}">Registrar vacunador</a></p>
+  <p><a class="linkBoton" href="#">Registrar administrador</a></p>
   <p><a class="linkBoton" href="{% url 'logout' %}">Cerrar Sesion</a></p>
+  
 {% else %}
   <p>Debes iniciar sesion para continuar</p>
   <ul>
@@ -17,5 +20,4 @@
     <li><a class="linkBoton" href="{% url 'signup' %}">Registrarse</a></li>
   </ul>
 {% endif %}
-
 {% endblock content %}

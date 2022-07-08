@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path  # new
 from django.views.generic.base import TemplateView
+from accounts.views import CustomLoginView
 from accounts.forms import CustomEmailValidationOnForgotPassword
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),  # new
     # esto es para el logueo de users generados a traves del superuser de django
     # https://learndjango.com/tutorials/django-login-and-logout-tutorial
+    path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path("accounts/", include("django.contrib.auth.urls")),  # new
     #re_path(r'^password-reset/$',
     #'django.contrib.auth.views.password_reset',

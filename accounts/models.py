@@ -47,7 +47,8 @@ class Vacuna(models.Model):
     nombrevacuna = models.CharField(max_length=100, primary_key=True)
     # YYYY-MM-DD
     # fecha_vencimiento = models.DateField
-
+    def __str__(self):
+        return self.nombrevacuna
 
 class Vacunador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -115,10 +116,11 @@ class Turno(models.Model):
     centro = models.ForeignKey(CentroDeVacunacion, null=False, on_delete=models.CASCADE, default='Bosque')
     turnoSlotID = models.ForeignKey(TurnoSlot, on_delete=models.CASCADE)
     horaturnoID = models.ForeignKey(HoraTurno, on_delete=models.CASCADE)
+    vacunaID = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.turnoSlotID) + " - Hora: " + str(self.horaturnoID) + " - " \
-               + self.paciente.get_nombrecompleto() + " - Centro: " + str(self.centro)
+               + self.paciente.get_nombrecompleto() + " - Vacuna: " + str(self.vacunaID) +" - Centro: " + str(self.centro)
 
 
 # class TrabajaEn(models.Model):
