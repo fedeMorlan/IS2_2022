@@ -351,6 +351,7 @@ def solicitarTurno_view(request):
         fechaElegida = form.cleaned_data['fecha']
         horaElegida = form2.cleaned_data.get('horaturnoID').hora
         horaActual = horas.filter(hora=horaElegida).get()
+        vacuna = form2.cleaned_data.get('nombrevacuna')
 
         # definir si la fecha es posible por paciente de riesgo ------
         # creamos un boolean para interrumpir el envio del formulario mas adelante
@@ -366,16 +367,18 @@ def solicitarTurno_view(request):
                 ok = False
                 messages.error(request, "Se requiere reservar una fecha posterior a 7 dias")
 
-        # si la fecha existe
-        if turnos.filter(fecha=fechaElegida).exists() and ok:
-            turnoSlotActual = turnos.get(fecha=fechaElegida)
+        # si la fecha existe en ese centro
+        if turnos2.filter(centro=paciente.centro_vacunacion, horaturnoID=horaActual).exists() and \
+                turnos.filter(fecha=fechaElegida, horaID=horaActual).exists() and ok:
+            turnoActual=turnos2.get(centro=paciente.centro_vacunacion, horaturnoID=horaActual)
+            turnoSlotActual = turnos.get(fecha=fechaElegida, horaID=horaActual, slotID=turnoActual.turnoSlotID.slotID)
             # si hay cupo disponible
             if turnoSlotActual.cupo < 5:
                 # incrementar el contador y guardar turno
                 turnoSlotActual.cupo += 1
                 turnoSlotActual.save()
                 turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
-                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual, vacunaID=vacuna)
                 turno.save()
                 turno_data = turnos2.get(paciente=paciente)
                 turno_dic = {"turnoActual": turno_data}
@@ -390,7 +393,7 @@ def solicitarTurno_view(request):
             turnoSlotActual = TurnoSlot(fecha=fechaElegida, cupo=1, horaID=horaActual)
             turnoSlotActual.save()
             turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
-                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual, vacunaID=vacuna)
             turno.save()
             # crear fecha y guardar turno
             turno_data = turnos2.get(paciente=paciente)
@@ -428,6 +431,7 @@ def modificarTurno_view(request):
         fechaElegida = form.cleaned_data['fecha']
         horaElegida = form2.cleaned_data.get('horaturnoID').hora
         horaActual = horas.filter(hora=horaElegida).get()
+        vacuna = form2.cleaned_data.get('nombrevacuna')
 
         # definir si la fecha es posible por paciente de riesgo ------
         # creamos un boolean para interrumpir el envio del formulario mas adelante
@@ -444,8 +448,10 @@ def modificarTurno_view(request):
                 messages.error(request, "Se requiere reservar una fecha posterior a 7 dias")
 
         # si la fecha existe
-        if turnos.filter(fecha=fechaElegida).exists() and ok:
-            turnoSlotActual = turnos.get(fecha=fechaElegida)
+        if turnos2.filter(centro=paciente.centro_vacunacion, horaturnoID=horaActual).exists() and \
+                turnos.filter(fecha=fechaElegida, horaID=horaActual).exists() and ok:
+            turnoActual = turnos2.get(centro=paciente.centro_vacunacion, horaturnoID=horaActual)
+            turnoSlotActual = turnos.get(fecha=fechaElegida, horaID=horaActual, slotID=turnoActual.turnoSlotID.slotID)
             # si hay cupo disponible
             if turnoSlotActual.cupo < 5:
 
@@ -457,7 +463,7 @@ def modificarTurno_view(request):
                 turnoSlotActual.cupo += 1
                 turnoSlotActual.save()
                 turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
-                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                              centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual, vacunaID=vacuna)
                 turno.save()
 
                 turno_dic = {"turnoActual": turno}
@@ -475,7 +481,7 @@ def modificarTurno_view(request):
             turnoSlotActual = TurnoSlot(fecha=fechaElegida, cupo=1, horaID=horaActual)
             turnoSlotActual.save()
             turno = Turno(paciente=user_info.paciente, turnoSlotID=turnoSlotActual,
-                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual)
+                          centro=user_info.paciente.centro_vacunacion, horaturnoID=horaActual, vacunaID=vacuna)
             turno.save()
             turno_dic = {"turnoActual": turno}
             return render(request, 'turno_solicitado.html', turno_dic)

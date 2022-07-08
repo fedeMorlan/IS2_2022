@@ -13,7 +13,8 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 from django.forms import ModelForm, ValidationError
-from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, VacunasAnteriores, CentroDeVacunacion, Aplicacion
+from accounts.models import Paciente, VacunasAnteriores, CentroDeVacunacion, Turno, TurnoSlot, HoraTurno, Vacuna, \
+    VacunasAnteriores, CentroDeVacunacion, Aplicacion
 
 
 class DateInput(forms.DateInput):
@@ -98,7 +99,7 @@ class ModificarDatosForm(ModelForm):
         first_name = forms.CharField(max_length=100, label='Nombre')
         last_name = forms.CharField(max_length=100, label='Apellido')
         email = forms.EmailField(max_length=150, label='Email')
-        #nacimiento = forms.DateInput()
+        # nacimiento = forms.DateInput()
         opciones = [('True', 'Si'), ('False', 'No')]
         comorbilidad = forms.ChoiceField(widget=forms.RadioSelect, choices=opciones, label='Comorbilidades')
         # username = forms.CharField(max_length=150, help_text='debe ser único', label='Nombre de Usuario')
@@ -112,13 +113,12 @@ class ModificarDatosForm(ModelForm):
     else:
         pass
 
-
     class Meta():
         model = Paciente
         fields = ('dni', 'first_name', 'last_name', 'nacimiento', 'email', 'comorbilidad')
         widgets = {
             'nacimiento': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date', 'min': '1920-01-01',
-                                                                      'max': '2022-06-13',})
+                                                                      'max': '2022-06-13', })
         }
 
 
@@ -145,19 +145,22 @@ class validarIdentidadRenaperForm(ModelForm):
         model = Paciente
         fields = ()
 
+
 class registrarAplicacionForm(ModelForm):
-    nombrevacuna = forms.ModelChoiceField(label = 'Nombre de la vacuna', queryset=
-        Vacuna.objects.all())
-    fecha_de_aplicacion = forms.DateField(label= 'Fecha de la aplicación', widget=forms.widgets.DateInput(
+    nombrevacuna = forms.ModelChoiceField(label='Nombre de la vacuna', queryset=
+    Vacuna.objects.all())
+    fecha_de_aplicacion = forms.DateField(label='Fecha de la aplicación', widget=forms.widgets.DateInput(
         attrs={'type': 'date'}
     ))
-    numero_de_lote = forms.IntegerField(label = 'Lote')
-    id_paciente = forms.ModelChoiceField(label = 'usuario del paciente', queryset=
-        Paciente.objects.all())
-        #widget=autocomplete.ModelSelect2(url='paciente-autocomplete'))
+    numero_de_lote = forms.IntegerField(label='Lote')
+    id_paciente = forms.ModelChoiceField(label='usuario del paciente', queryset=
+    Paciente.objects.all())
+
+    # widget=autocomplete.ModelSelect2(url='paciente-autocomplete'))
     class Meta:
         model = Aplicacion
         fields = ('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote', 'id_paciente')
+
 
 class SolicitarTurnoForm(ModelForm):
     fecha = forms.DateInput()
@@ -171,12 +174,16 @@ class SolicitarTurnoForm(ModelForm):
 
 
 class SolicitarTurnoForm2(ModelForm):
+    # no se puede elegir turno de fiebre amarilla
+    nombrevacuna = forms.ModelChoiceField(label='Vacuna',
+                                          queryset=Vacuna.objects.exclude(nombrevacuna='fiebre amarilla'))
+
     class Meta:
         model = Turno
         labels = {
-            "horaturnoID": "Horario"
+            "horaturnoID": "Horario",
         }
-        fields = ('horaturnoID',)
+        fields = ('nombrevacuna', 'horaturnoID',)
 
 
 class CancelarTurnoForm(ModelForm):
@@ -184,23 +191,27 @@ class CancelarTurnoForm(ModelForm):
         model = Turno
         fields = ()
 
+
 class CustomEmailValidationOnForgotPassword(PasswordResetForm):
     def clean_email(self):
         email2 = self.cleaned_data['email']
         if not User.objects.filter(email__iexact=email2).exists():
             raise ValidationError("No hay usuarios registrados con este email")
-        
+
         return email2
 
+
 class TurnosDelDiaPorCentroForm(ModelForm):
-    centro = forms.ModelChoiceField(queryset=CentroDeVacunacion.objects.all()) 
+    centro = forms.ModelChoiceField(queryset=CentroDeVacunacion.objects.all())
+
     class Meta:
         model = CentroDeVacunacion
-        fields = ('centro',)   
+        fields = ('centro',)
+
 
 class EmailValidationOnForgotPassword(PasswordResetForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         if not User.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError(("Email no registrado"))
+            raise forms.ValidationError("Email no registrado")
         return email
