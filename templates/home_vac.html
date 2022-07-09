@@ -7,8 +7,8 @@
 <h1>Inicio</h1>
 <p> Faltan incorporar los botones indicados</p>
 {% if user.is_authenticated %}
-  <p><a class="linkBoton" href="#">Ver turno pendiente</a></p>
-  <p><a class="linkBoton" href="#">Ver mis dosis aplicadas</a></p>
+  <p><a class="linkBoton" href="{% url 'Registrar aplicacion de vacuna' %}">Registrar aplicacion</a></p>
+  <p><a class="linkBoton" href="#">Ver pacientes del dia</a></p>
   <p><a class="linkBoton" href="{% url 'logout' %}">Cerrar Sesion</a></p>
 {% else %}
   <p>Debes iniciar sesion para continuar</p>

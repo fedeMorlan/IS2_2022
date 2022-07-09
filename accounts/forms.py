@@ -174,9 +174,28 @@ class SolicitarTurnoForm(ModelForm):
 
 
 class SolicitarTurnoForm2(ModelForm):
-    # no se puede elegir turno de fiebre amarilla
-    nombrevacuna = forms.ModelChoiceField(label='Vacuna',
-                                          queryset=Vacuna.objects.exclude(nombrevacuna='fiebre amarilla'))
+    # se requiere hacer un inicializador del form que pueda tomar al usuario como parametro
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(SolicitarTurnoForm2, self).__init__(*args, **kwargs)
+
+        # se genera dinamicamente el queryset de las vacunas segun las vacunas anteriores del paciente
+        vacunas_anteriores_paciente = VacunasAnteriores.objects.get(user=self.user)
+        # no se puede elegir turno de fiebre amarilla porque es en el momento
+        elecciones = Vacuna.objects.exclude(nombrevacuna='fiebre amarilla')
+        # no se debe poder elegir COVID 2 si el paciente no tiene COVID 1 o si ya se dio la 2
+        if not vacunas_anteriores_paciente.covid_1 or vacunas_anteriores_paciente.covid_2:
+            elecciones = elecciones.exclude(nombrevacuna='COVID 2')
+        # no se deben poder elegir vacunas que el paciente ya tiene
+        if vacunas_anteriores_paciente.covid_1:
+            elecciones = elecciones.exclude(nombrevacuna='COVID 1')
+        # dejamos que la vacuna de la gripe se pueda dar varias veces
+
+        self.fields['nombrevacuna'].queryset = elecciones
+
+    # campo del form, se asigna queryset None para que tome dinamicamente del constructor
+    nombrevacuna = forms.ModelMultipleChoiceField(label='Vacuna', queryset=None, required=True,
+                                                  widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Turno

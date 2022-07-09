@@ -347,7 +347,7 @@ def solicitarTurno_view(request):
     # ----------- PEDIR TURNO --------------------
     # elegir fecha y hora de turno
     form = SolicitarTurnoForm(request.POST, request.FILES)
-    form2 = SolicitarTurnoForm2(request.POST, request.FILES)
+    form2 = SolicitarTurnoForm2(request.POST, request.FILES, user=request.user)
 
     if request.method == 'POST' and form.is_valid() and form2.is_valid():
         fechaElegida = form.cleaned_data['fecha']
@@ -403,7 +403,7 @@ def solicitarTurno_view(request):
             return render(request, 'turno_solicitado.html', turno_dic)
     else:
         form = SolicitarTurnoForm()
-        form2 = SolicitarTurnoForm2()
+        form2 = SolicitarTurnoForm2(user=request.user)
 
     # FALTA: enviar mail de turno
     return render(request, 'solicitar_turno.html', {'form': form, 'form2': form2})
@@ -425,7 +425,7 @@ def modificarTurno_view(request):
     paciente = Paciente.objects.get(user__id=user)
     user_info = User.objects.get(id=user)
     form = SolicitarTurnoForm(request.POST, request.FILES)
-    form2 = SolicitarTurnoForm2(request.POST, request.FILES)
+    form2 = SolicitarTurnoForm2(request.POST, request.FILES, user=request.user)
     turnos = TurnoSlot.objects
     turnos2 = Turno.objects
     horas = HoraTurno.objects
@@ -489,7 +489,7 @@ def modificarTurno_view(request):
             return render(request, 'turno_solicitado.html', turno_dic)
     else:
         form = SolicitarTurnoForm()
-        form2 = SolicitarTurnoForm2()
+        form2 = SolicitarTurnoForm2(user=request.user)
 
     # FALTA: enviar mail de turno
     return render(request, 'modificar_turno.html', {'form': form, 'form2': form2})
@@ -514,12 +514,24 @@ def registrarAplicacion_view(request):
     if form.is_valid():
         aplicacion = form.save(commit=False)
         aplicacion.nombrevacuna = form.cleaned_data.get('nombrevacuna')
-        aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fehca_de_aplicacion')
+        aplicacion.fecha_de_aplicacion = form.cleaned_data.get('fecha_de_aplicacion')
         aplicacion.numero_de_lote = form.cleaned_data.get('numero_de_lote')
         aplicacion.id_paciente = form.cleaned_data.get('id_paciente')
-        # aplicacion.id_vacunador = request.user.id
-        aplicacion.id_vacunador = Vacunador.objects.get(pk=1)
+        aplicacion.id_vacunador = Vacunador.objects.get(pk=request.user.id)
+        # aplicacion.id_vacunador = Vacunador.objects.get(pk=9)
         aplicacion.save()
+
+        # registrar en tabla VacunasAnteriores la aplicacion actual
+        vacuna = VacunasAnteriores.objects.get(user=aplicacion.id_paciente.user)
+        if str(aplicacion.nombrevacuna) == 'COVID 1':
+            vacuna.covid_1 = True
+        elif str(aplicacion.nombrevacuna) == 'COVID 2':
+            vacuna.covid_2 = True
+        elif str(aplicacion.nombrevacuna) == 'gripe':
+            vacuna.gripe = True
+        elif str(aplicacion.nombrevacuna) == 'fiebre amarilla':
+            vacuna.fiebre_amarilla = True
+        vacuna.save()
         return render(request, 'aplicacion_ok.html')
 
     return render(request, 'registrar_aplicacion.html', {'form': form})
