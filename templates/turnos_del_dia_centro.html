@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_administrador.html" %}
 
 {% block title %}Turnos del dia{% endblock %}
 
@@ -30,6 +30,6 @@
     </p>
     
 {% endfor %}
-<a href="#"><button class="volver">Volver</button></a>
+<a href="{% url 'home dueño' %}"><button class="volver">Volver</button></a>
 {% endblock content %}
 

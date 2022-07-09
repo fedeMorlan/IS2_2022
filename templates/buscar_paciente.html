@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_administrador.html" %}
 
 {% block title %}Buscar Paciente{% endblock %}
 
@@ -26,5 +26,5 @@
 {{pacientes_html|safe}}
 </br>
 </br>
-<a href="#"><button class="volver">Volver</button></a>
+<a href="{% url 'home dueño' %}"><button class="volver">Volver</button></a>
 {% endblock content %}
