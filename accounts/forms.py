@@ -222,7 +222,6 @@ class CustomEmailValidationOnForgotPassword(PasswordResetForm):
 
 class TurnosDelDiaPorCentroForm(ModelForm):
     centro = forms.ModelChoiceField(queryset=CentroDeVacunacion.objects.all())
-
     class Meta:
         model = CentroDeVacunacion
         fields = ('centro',)

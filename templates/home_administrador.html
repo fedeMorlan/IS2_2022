@@ -8,7 +8,10 @@
 
 {% if user.is_authenticated %}
   Bienvenido {{ user.username }}!
-  <p><a class="linkBoton" href="#">Ver estadisticas</a></p>
+  <p><a class="linkBoton" href="{% url 'todos los turnos del dia' %}">Ver turno del dia de todos los centros</a></p>
+  <p><a class="linkBoton" href="{% url 'turnos del dia por centro' %}">Ver turno del dia de un centro</a></p>
+  <p><a class="linkBoton" href="{% url 'buscar paciente' %}">Buscar paciente</a></p>
+  <p><a class="linkBoton" href="{% url 'buscar vacunador' %}">Buscar vacunador</a></p>
   <p><a class="linkBoton" href="{% url 'registrar vacunador' %}">Registrar vacunador</a></p>
   <p><a class="linkBoton" href="#">Registrar administrador</a></p>
   <p><a class="linkBoton" href="{% url 'logout' %}">Cerrar Sesion</a></p>
