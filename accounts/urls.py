@@ -30,5 +30,7 @@ urlpatterns = [
     path('home_administrador/', homeAdministrador_view, name='home dueño'),
     path('registrar_vacunador/', registrarVacunador_view, name='registrar vacunador'),
     path('registrar_vacunador/exito', registrarVacunadorExito_view, name='registrar vacunador exito'),
+    path('buscar_paciente/', buscarPaciente_view, name='buscar paciente'),
+    path('buscar_vacunador/', buscarVacunador_view, name='buscar vacunador'),
     ]
 

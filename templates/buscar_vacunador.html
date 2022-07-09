@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Buscar Vacunador{% endblock %}
+
+{% block content %}
+<h1>Buscar Vacunador por nombre o apellido</h1>
+<form method="post">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    </p>
+  {% endfor %}
+  <div class="buttonholder">
+    <button type="submit">Buscar</button>
+  </div>
+</form>
+<h2>Resultado de la busqueda "{{username}}"</h2>
+{{vacunadores_html|safe}}
+</br>
+</br>
+<a href="#"><button class="volver">Volver</button></a>
+{% endblock content %}

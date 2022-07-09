@@ -215,3 +215,15 @@ class EmailValidationOnForgotPassword(PasswordResetForm):
         if not User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("Email no registrado")
         return email
+
+class BuscarPacienteForm(ModelForm):
+    username = forms.CharField(max_length=150, label='Nombre o apellido')
+    class Meta:
+        model = Paciente
+        fields = ('username',)
+
+class BuscarVacunadorForm(ModelForm):
+    username = forms.CharField(max_length=150, label='Nombre o apellido')
+    class Meta:
+        model = Paciente
+        fields = ('username',)

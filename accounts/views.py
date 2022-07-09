@@ -6,6 +6,8 @@ from django.forms import ImageField
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from datetime import date
+from django.db.models import Q
+import pandas as pd
 # Create your views here.
 
 # builtin: UserCreationForm para registro
@@ -599,3 +601,73 @@ def verTurnosDelDiaCentro_view(request):
         turnos_del_dia = ('No hay turnos para mostrar',)
     turnoDic = {'turnos': turnos_del_dia, 'hoy': hoy, 'centro': centro, 'form': form}
     return render(request, 'turnos_del_dia_centro.html', turnoDic)
+
+def buscarPaciente_view(request):
+    form = BuscarPacienteForm(request.POST)
+    pacientes_df = ''
+    #pacientes = ''
+    username = ''
+    if form.is_valid():
+        form.save(commit=False)
+        username = form.cleaned_data.get('username')
+        pacientes = Paciente.objects.filter(Q(first_name__contains=username) | Q(last_name__contains=username) | Q(user__username__contains=username)).filter(dueño=False).filter(vacunador=False)
+        res=[]
+        for p in pacientes:
+            paciente_id = p.user.id
+            userinfo = User.objects.get(id=paciente_id)
+            nombre_usuario = userinfo.username
+            try:
+                vacunas = VacunasAnteriores.objects.get(user__id=userinfo.id)
+                vacunas = vacunas.__str__()
+            except:
+                vacunas = 'No declara vacunas previas'
+            try:
+                turnos = Turno.objects.get(paciente__user = p.user)
+                turnos = turnos.__str__()[0:24]
+            except:
+                turnos = 'Sin turno asignado'
+            nombre = userinfo.paciente.first_name
+            apellido = userinfo.paciente.last_name
+            dni = userinfo.paciente.dni
+            email = userinfo.paciente.email
+            comor = userinfo.paciente.comorbilidad    
+            if comor:
+                comor = 'Si'
+            else:
+                comor = 'No'
+            info =  [nombre_usuario, f"{apellido}, {nombre}", dni, email, comor, turnos, vacunas]
+            res.append(info)
+        pacientes_df = pd.DataFrame(res, columns = ['Nombre de usuario','Paciente', 'DNI', 'Email','Comorbilidad', 'Turno', 'Vacunas anteriores'])
+        pacientes_html = pacientes_df.to_html(index=False)
+    if len(pacientes_df) == 0:
+        pacientes_html = 'No hay resultados para mostrar'
+   
+    context = {'username':username, 'form':form, 'pacientes_html':pacientes_html}
+    return render(request,'buscar_paciente.html',context)
+
+def buscarVacunador_view(request):
+    form = BuscarVacunadorForm(request.POST)
+    vacunadores_df = ''
+    username = ''
+    if form.is_valid():
+        form.save(commit=False)
+        username = form.cleaned_data.get('username')
+        vacunadores = Paciente.objects.filter(Q(first_name__contains=username) | Q(last_name__contains=username) | Q(user__username__contains=username)).filter(dueño=False).filter(vacunador=True)
+        res=[]
+        for v in vacunadores:
+            vacunador_id = v.user.id
+            userinfo = User.objects.get(id=vacunador_id)
+            nombre_usuario = userinfo.username
+            nombre = userinfo.paciente.first_name
+            apellido = userinfo.paciente.last_name
+            dni = userinfo.paciente.dni
+            email = userinfo.paciente.email
+            info =  [nombre_usuario, f"{apellido}, {nombre}", dni, email]
+            res.append(info)
+        vacunadores_df = pd.DataFrame(res, columns = ['Nombre de Usuario','Apellido y nombre', 'DNI', 'Email'])
+        vacunadores_html = vacunadores_df.to_html(index=False)
+    if len(vacunadores_df) == 0:
+        vacunadores_html = 'No hay resultados para mostrar'
+   
+    context = {'username':username, 'form':form, 'vacunadores_html':vacunadores_html}
+    return render(request,'buscar_vacunador.html',context)
