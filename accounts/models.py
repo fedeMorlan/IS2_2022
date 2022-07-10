@@ -116,7 +116,8 @@ class Turno(models.Model):
     centro = models.ForeignKey(CentroDeVacunacion, null=False, on_delete=models.CASCADE, default='Bosque')
     turnoSlotID = models.ForeignKey(TurnoSlot, on_delete=models.CASCADE)
     horaturnoID = models.ForeignKey(HoraTurno, on_delete=models.CASCADE)
-    vacunaID = models.ForeignKey(Vacuna, on_delete=models.CASCADE)
+    vacunaID = models.ForeignKey(Vacuna, on_delete=models.CASCADE, related_name='vacuna1')
+    vacuna2ID = models.ForeignKey(Vacuna, on_delete=models.CASCADE, null=True, related_name='vacuna2')
 
     def __str__(self):
         return str(self.turnoSlotID) + " - Hora: " + str(self.horaturnoID) + " - " \
