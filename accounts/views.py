@@ -134,13 +134,16 @@ def elegirCentro_view(request):
 
 
 def verVacunasAplicadas_view(request):
-    vacunas = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna', 'fecha_de_aplicacion',
-                                                                                 'numero_de_lote')
+    vacunas = Aplicacion.objects.filter(id_paciente=request.user.id).values_list('nombrevacuna', 'fecha_de_aplicacion', 'numero_de_lote')
+    print(vacunas)                                                                             
     if not vacunas:
         # lo pongo como parte de una tupla porque el html muestra la request.data por campos, si mando el string me muestra renglones de una letra
         request.data = ("Usted no tiene vacunas aplicadas.",)
     else:
-        request.data = vacunas
+        vacunasFormateadas = list()
+        for vacuna in vacunas:
+            vacunasFormateadas.append(("Vacuna: ", str(vacuna[0]), ". Fecha: ", str(vacuna[1].strftime('%d %b %Y')), ". Número de lote: ", str(vacuna[2])))
+        request.data = vacunasFormateadas
     return render(request, 'vacunas_aplicadas.html')
 
 
